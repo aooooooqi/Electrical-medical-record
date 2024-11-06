@@ -29,10 +29,9 @@ const Component = () => {
         }
         className={styles.nav}
       >
-        <Nav.Item itemKey="Home" text="Home" />
-        <Nav.Item itemKey="Project" text="Project" />
-        <Nav.Item itemKey="Board" text="Board" />
-        <Nav.Item itemKey="Forms" text="Forms" />
+        <Nav.Item itemKey="Home" link="/Home" text="Home" />
+          <Nav.Item itemKey="Client_detail" link="/Client_detail" text="Client Detail" />
+          <Nav.Item itemKey="Session_details" link="/Session_details" text="Session Details" />
       </Nav>
       <div className={styles.main}>
         <div className={styles.card}>
