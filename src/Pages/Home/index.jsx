@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Nav, Avatar, Form, Checkbox, Button, Radio, RadioGroup, Space, DatePicker, Calendar } from '@douyinfe/semi-ui';
 import { IconSemiLogo, IconFeishuLogo, IconHelpCircle, IconBell } from '@douyinfe/semi-icons';
-import styles from '../../index.module.scss';
+import styles from '../../index.css';
 
 class CustomComponent extends Component {
   constructor() {

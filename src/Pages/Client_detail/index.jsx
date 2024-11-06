@@ -1,7 +1,7 @@
 import React from "react";
 import { Nav, Avatar, Tag, Descriptions, Select, TextArea, Button, Table } from '@douyinfe/semi-ui';
 import { IconSemiLogo, IconFeishuLogo, IconHelpCircle, IconBell, IconMapPin, IconTiktokLogo, IconMail, IconUserCircle } from '@douyinfe/semi-icons';
-import styles from '../../index.module.scss';
+import styles from './index.module.scss';
 
 const Component = () => {
   return (
