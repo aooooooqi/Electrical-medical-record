@@ -1,0 +1,25 @@
+/* App.css */
+
+.App {
+  text-align: center;
+  background-color: #f0f0f0; /* 浅灰色背景 */
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.App-header {
+  background-color: #ffffff; /* 白色背景 */
+  color: #333333; /* 深色文本 */
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 80%;
+  max-width: 800px;
+}
+
+.semi-calendar {
+  background-color: #ffffff !important; /* 强制 Calendar 背景为白色 */
+  color: #333333 !important; /* 深色文字 */
+}
