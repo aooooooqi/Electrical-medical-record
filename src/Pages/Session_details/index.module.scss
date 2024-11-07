@@ -1,296 +1,221 @@
 .frame {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    background: var(--semi-color-bg-0);
-    width: 1440px;
-    height: 1042px;
-    overflow: hidden;
-    text-align: left;
-    line-height: 20px;
-    letter-spacing: 0.28px;
-    white-space: normal;
-    color: var(--semi-color-text-0);
-    font-family: "PingFang SC";
-    font-size: 14px;
-    font-weight: 500;
-  }
-  
-  .nav {
-    flex-shrink: 0;
-    align-self: stretch;
-    height: 60px;
-  }
-  
-  .semiIconsSemiLogo {
-    color: var(--semi-color-text-0);
-    font-size: 36px;
-  }
-  
-  .dIv {
-    display: inline-flex;
-    align-items: center;
-    column-gap: 16px;
-    color: var(--semi-color-text-2);
-    font-size: 20px;
-  }
-  
-  .semiIconsFeishuLogo {
-    color: var(--semi-color-text-2);
-    font-size: 20px;
-  }
-  
-  .avatar {
-    flex-shrink: 0;
-    width: 32px;
-    height: 32px;
-  }
-  
-  .content {
-    display: flex;
-    flex-basis: 0;
-    flex-grow: 1;
-    align-items: flex-start;
-    align-self: stretch;
-    column-gap: 80px;
-    padding: 48px 0px 0px 80px;
-  }
-  
-  .left {
-    display: inline-flex;
-    flex-direction: column;
-    flex-shrink: 0;
-    align-items: flex-start;
-    row-gap: 16px;
-  }
-  
-  .userGroup {
-    display: flex;
-    flex-direction: column;
-    flex-shrink: 0;
-    align-items: flex-start;
-    border-width: 0px 0px 1px;
-    border-style: solid;
-    border-color: var(--semi-color-border);
-    padding: 0px 0px 15px;
-    width: 517px;
-    row-gap: 8px;
-  }
-  
-  .meegoSharedWebSettin {
-    flex-shrink: 0;
-    min-width: 83px;
-    line-height: 22px;
-    letter-spacing: -0.48px;
-    font-size: 16px;
-  }
-  
-  .meegoSharedWebSettin2 {
-    flex-shrink: 0;
-    min-width: 474px;
-    color: var(--semi-color-text-2);
-  }
-  
-  .basic {
-    display: flex;
-    flex-direction: column;
-    flex-shrink: 0;
-    align-items: flex-start;
-    width: 517px;
-    row-gap: 16px;
-  }
-  
-  .frame1321314180 {
-    display: inline-flex;
-    flex-shrink: 0;
-    align-items: center;
-    column-gap: 8px;
-    text-align: left;
-    line-height: 20px;
-    letter-spacing: 0.28px;
-    white-space: normal;
-    color: var(--semi-color-text-0);
-    font-family: "PingFang SC";
-    font-size: 14px;
-    font-weight: 500;
-  }
-  
-  .rectangle1364 {
-    flex-shrink: 0;
-    border-radius: 2px;
-    background: var(--semi-color-primary);
-    width: 2px;
-    height: 16px;
-  }
-  
-  .meegoSharedWebSettin3 {
-    flex-shrink: 0;
-    min-width: 38px;
-    vertical-align: baseline;
-  }
-  
-  .formField {
-    flex-shrink: 0;
-  }
-  
-  .line231 {
-    flex-shrink: 0;
-    background: #1c1f2314;
-    width: 517px;
-    height: 1px;
-  }
-  
-  .frame1321317571 {
-    display: flex;
-    flex-direction: column;
-    flex-shrink: 0;
-    align-items: flex-start;
-    align-self: stretch;
-    row-gap: 16px;
-  }
-  
-  .frame13213141802 {
-    display: inline-flex;
-    flex-shrink: 0;
-    align-items: center;
-    align-self: stretch;
-    column-gap: 8px;
-    border-radius: 6px;
-    padding: 12px 440px 4px 0px;
-    height: 20px;
-  }
-  
-  .meegoSharedWebSettin4 {
-    flex-shrink: 0;
-    min-width: 67px;
-  }
-  
-  .frame18390 {
-    display: flex;
-    flex-shrink: 0;
-    align-items: flex-start;
-    align-self: stretch;
-    justify-content: space-between;
-  }
-  
-  .frame18321 {
-    display: flex;
-    flex-direction: column;
-    flex-shrink: 0;
-    align-items: flex-start;
-    padding: 0px 1px 0px 0px;
-  }
-  
-  .meegoSharedWebSettin5 {
-    min-width: 89px;
-    color: var(--semi-color-text-1);
-  }
-  
-  .afterDeletingTheUser {
-    margin: 4px 0px 0px;
-    width: 352px;
-    color: var(--semi-color-text-2);
-  }
-  
-  .button {
-    flex-shrink: 0;
-    height: 32px;
-  }
-  
-  .frame13213141803 {
-    display: flex;
-    flex-shrink: 0;
-    align-items: center;
-    column-gap: 8px;
-    border-radius: 6px;
-    padding: 12px 610px 4px 0px;
-    width: 74px;
-    height: 20px;
-  }
-  
-  .meegoSharedWebSettin6 {
-    flex-shrink: 0;
-    min-width: 64px;
-  }
-  
-  .frame18327 {
-    display: flex;
-    flex-direction: column;
-    flex-shrink: 0;
-    align-items: flex-start;
-    width: 684px;
-    row-gap: 4px;
-  }
-  
-  .input {
-    flex-shrink: 0;
-    align-self: stretch;
-    height: 32px;
-  }
-  
-  .semiIconsSearch {
-    color: var(--semi-color-text-2);
-    font-size: 16px;
-  }
-  
-  .table {
-    flex-shrink: 0;
-    width: 683px;
-  }
-  
-  .frame1321317570 {
-    display: inline-flex;
-    align-items: flex-start;
-    column-gap: 8px;
-    text-align: left;
-    line-height: 20px;
-    letter-spacing: 0.28px;
-    white-space: normal;
-    color: var(--semi-color-text-0);
-    font-family: "PingFang SC";
-    font-size: 14px;
-    font-weight: 500;
-  }
-  
-  .avatar2 {
-    flex-shrink: 0;
-    width: 20px;
-    height: 20px;
-  }
-  
-  .zhangSiyuanUnrevised {
-    flex-shrink: 0;
-    min-width: 72px;
-    vertical-align: baseline;
-  }
-  
-  .text {
-    min-width: 46px;
-    vertical-align: baseline;
-    text-align: left;
-    line-height: 20px;
-    letter-spacing: -0.14px;
-    white-space: normal;
-    color: var(--semi-color-text-2);
-    font-family: Inter;
-    font-size: 14px;
-    font-weight: 400;
-  }
-  
-  .semiTeamBytedanceCom {
-    min-width: 183px;
-    vertical-align: baseline;
-    text-align: left;
-    line-height: 20px;
-    letter-spacing: 0;
-    white-space: normal;
-    color: var(--semi-color-text-2);
-    font-family: "PingFang SC";
-    font-size: 14px;
-    font-weight: 400;
-  }
-  
-  .button2 {
-    height: 32px;
-  }
-  
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: var(--semi-color-bg-0);
+  width: 1440px;
+  height: 1042px;
+  overflow: hidden;
+  text-align: left;
+  line-height: 28px;
+  letter-spacing: 0.4px;
+  white-space: normal;
+  font-family: Inter;
+  font-weight: 600;
+}
+
+.nav {
+  flex-shrink: 0;
+  align-self: stretch;
+  height: 60px;
+}
+
+.semiIconsSemiLogo {
+  color: var(--semi-color-text-0);
+  font-size: 36px;
+}
+
+.dIv {
+  display: inline-flex;
+  align-items: center;
+  column-gap: 16px;
+  color: var(--semi-color-text-2);
+  font-size: 20px;
+}
+
+.semiIconsFeishuLogo {
+  color: var(--semi-color-text-2);
+  font-size: 20px;
+}
+
+.avatar {
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  align-items: flex-start;
+  padding: 25px 71px 171px;
+  width: 1298px;
+  height: 786px;
+  row-gap: 40px;
+}
+
+.frame18637 {
+  display: flex;
+  flex-shrink: 0;
+  align-items: flex-start;
+  column-gap: 16px;
+  width: 1026px;
+  color: var(--semi-color-white);
+  font-size: 16px;
+}
+
+.frame1321314182 {
+  display: flex;
+  flex-basis: 0;
+  flex-direction: column;
+  flex-grow: 1;
+  align-items: flex-start;
+  border: 1px solid rgb(var(--semi-grey-1));
+  border-radius: 8px;
+  background: var(--semi-color-bg-1);
+  padding: 15px 15px 15px 23px;
+  height: 98px;
+  overflow: hidden;
+  row-gap: 16px;
+}
+
+.workitemIcon {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  border-radius: 12px;
+  background: rgb(var(--semi-pink-5));
+  padding: 8px;
+  height: 16px;
+  overflow: hidden;
+}
+
+.semiIconsUserCircle {
+  color: var(--semi-color-white);
+  font-size: 16px;
+}
+
+.descriptions {
+  flex-shrink: 0;
+}
+
+.buttonOnlyIconSecond {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  border-radius: 12px;
+  background: rgb(var(--semi-light-blue-5));
+  padding: 8px;
+  height: 16px;
+  overflow: hidden;
+}
+
+.buttonOnlyIconSecond2 {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  border-radius: 12px;
+  background: rgb(var(--semi-green-5));
+  padding: 8px;
+  height: 16px;
+  overflow: hidden;
+}
+
+.customers {
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  align-items: flex-start;
+  align-self: stretch;
+  color: var(--semi-color-text-0);
+  font-size: 20px;
+  row-gap: 16px;
+}
+
+.item {
+  flex-shrink: 0;
+  min-width: 110px;
+}
+
+.table {
+  flex-shrink: 0;
+  align-self: stretch;
+}
+
+.tD {
+  display: inline-flex;
+  align-items: center;
+  column-gap: 12px;
+  text-align: left;
+  line-height: 20px;
+  letter-spacing: 0;
+  white-space: normal;
+  color: var(--semi-color-text-0);
+  font-family: Inter;
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.rectangle3 {
+  flex-shrink: 0;
+  border-radius: 99px;
+  width: 32px;
+  height: 32px;
+}
+
+.text {
+  flex-shrink: 0;
+  min-width: 90px;
+  vertical-align: baseline;
+}
+
+.text2 {
+  min-width: 76px;
+  vertical-align: baseline;
+  text-align: left;
+  line-height: 20px;
+  letter-spacing: -0.14px;
+  white-space: normal;
+  color: var(--semi-color-text-0);
+  font-family: Inter;
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.tD2 {
+  display: inline-flex;
+  align-items: center;
+  column-gap: 12px;
+  text-align: left;
+  line-height: 20px;
+  letter-spacing: -0.14px;
+  white-space: normal;
+  color: var(--semi-color-text-0);
+  font-family: Inter;
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.text3 {
+  flex-shrink: 0;
+  min-width: 95px;
+  vertical-align: baseline;
+}
+
+.text4 {
+  min-width: 60px;
+  vertical-align: baseline;
+  text-align: left;
+  line-height: 20px;
+  letter-spacing: -0.14px;
+  white-space: normal;
+  color: var(--semi-color-text-0);
+  font-family: Inter;
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.button {
+  height: 32px;
+}

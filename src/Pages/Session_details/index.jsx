@@ -1,6 +1,6 @@
 import React from "react";
-import { Nav, Avatar, Form, Button, Input, Table } from '@douyinfe/semi-ui';
-import { IconSemiLogo, IconFeishuLogo, IconHelpCircle, IconBell, IconSearch, IconMore } from '@douyinfe/semi-icons';
+import { Nav, Avatar, Descriptions, Table, Button } from '@douyinfe/semi-ui';
+import { IconSemiLogo, IconFeishuLogo, IconHelpCircle, IconBell, IconUserCircle, IconMore, IconSort } from '@douyinfe/semi-icons';
 import styles from './index.module.scss';
 
 const Component = () => {
@@ -34,143 +34,124 @@ const Component = () => {
           <Nav.Item itemKey="Session_details" link="/Session_details" text="Session Details" />
       </Nav>
       <div className={styles.content}>
-        <div className={styles.left}>
-          <div className={styles.userGroup}>
-            <p className={styles.meegoSharedWebSettin}>User Group</p>
-            <p className={styles.meegoSharedWebSettin2}>
-              Set the data range visible to each work item of user group members
-            </p>
-          </div>
-          <div className={styles.basic}>
-            <Form className={styles.basic}>
-              <div className={styles.frame1321314180}>
-                <div className={styles.rectangle1364} />
-                <p className={styles.meegoSharedWebSettin3}>Basic</p>
-              </div>
-              <Form.Input
-                label={{ text: "Group Name" }}
-                field="input"
-                placeholder="Designers"
-                fieldStyle={{ padding: 0 }}
-                style={{ width: 517 }}
-                className={styles.formField}
-              />
-              <Form.Input
-                label={{ text: "Group Alias" }}
-                field="field1"
-                placeholder="Designers"
-                fieldStyle={{ padding: 0 }}
-                style={{ width: 517 }}
-                className={styles.formField}
-              />
-            </Form>
-            <div className={styles.line231} />
-            <div className={styles.frame1321317571}>
-              <div className={styles.frame13213141802}>
-                <div className={styles.rectangle1364} />
-                <p className={styles.meegoSharedWebSettin4}>Advanced</p>
-              </div>
-              <div className={styles.frame18390}>
-                <div className={styles.frame18321}>
-                  <p className={styles.meegoSharedWebSettin5}>Delete group</p>
-                  <p className={styles.afterDeletingTheUser}>
-                    After deleting the user group, the members and data permissions
-                    in the group will be cleared.
-                  </p>
-                </div>
-                <Button type="danger" className={styles.button}>
-                  Delete
-                </Button>
-              </div>
+        <div className={styles.frame18637}>
+          <div className={styles.frame1321314182}>
+            <div className={styles.workitemIcon}>
+              <IconUserCircle className={styles.semiIconsUserCircle} />
             </div>
+            <Descriptions
+              data={[{ key: "用户总数量", value: "12,000" }]}
+              row={true}
+              className={styles.descriptions}
+            />
+          </div>
+          <div className={styles.frame1321314182}>
+            <div className={styles.buttonOnlyIconSecond}>
+              <IconUserCircle className={styles.semiIconsUserCircle} />
+            </div>
+            <Descriptions
+              data={[{ key: "管理员数量", value: "12,000" }]}
+              row={true}
+              className={styles.descriptions}
+            />
+          </div>
+          <div className={styles.frame1321314182}>
+            <div className={styles.buttonOnlyIconSecond2}>
+              <IconUserCircle className={styles.semiIconsUserCircle} />
+            </div>
+            <Descriptions
+              data={[{ key: "活跃用户数量", value: "12,000" }]}
+              row={true}
+              className={styles.descriptions}
+            />
           </div>
         </div>
-        <div className={styles.left}>
-          <div className={styles.frame13213141803}>
-            <div className={styles.rectangle1364} />
-            <p className={styles.meegoSharedWebSettin6}>Members</p>
-          </div>
-          <div className={styles.frame18327}>
-            <Input
-              placeholder="请输入内容"
-              prefix={<IconSearch className={styles.semiIconsSearch} />}
-              defaultValue="默认值"
-              insetLabel={<IconSearch className={styles.semiIconsSearch} />}
-              className={styles.input}
-            />
-            <Table
-              columns={[
-                {
-                  render: (text, record) => {
-                    return (
-                      <div className={styles.frame1321317570}>
-                        <Avatar
-                          size="extra-extra-small"
-                          src="https://sf6-cdn-tos.douyinstatic.com/obj/eden-cn/ptlz_zlp/ljhwZthlaukjlkulzlp/root-web-sites/avatarDemo.jpeg"
-                          color="blue"
-                          className={styles.avatar2}
-                        >
-                          示例
-                        </Avatar>
-                        <p className={styles.zhangSiyuanUnrevised}>Point Halo</p>
-                      </div>
-                    );
-                  },
-                  title: "标题",
-                  width: 200,
-                  dataIndex: "title",
-                },
-                {
-                  render: (text, record) => {
-                    return <p className={styles.text}>Person</p>;
-                  },
-                  title: "创建日期",
-                  width: 80,
-                  dataIndex: "createDate",
-                },
-                {
-                  render: (text, record) => {
-                    return (
-                      <p className={styles.semiTeamBytedanceCom}>
-                        semi-team@bytedance.com
-                      </p>
-                    );
-                  },
-                  title: "创建人",
-                  dataIndex: "creator",
-                },
-                {
-                  render: (text, record) => {
-                    return (
-                      <Button
-                        theme="borderless"
-                        icon={<IconMore />}
-                        className={styles.button2}
+        <div className={styles.customers}>
+          <p className={styles.item}>Customers</p>
+          <Table
+            columns={[
+              {
+                title: "标题",
+                render: (text, record) => {
+                  return (
+                    <div className={styles.tD}>
+                      <img
+                        src="https://lf9-static.semi.design/obj/semi-tos/template/95c73b19-d0b2-41fb-a5a2-36ed9a9136a3.png"
+                        className={styles.rectangle3}
                       />
-                    );
-                  },
-                  title: "",
-                  width: 100,
-                  dataIndex: "column3",
+                      <p className={styles.text}>Abstergo Ltd.</p>
+                    </div>
+                  );
                 },
-              ]}
-              dataSource={[
-                { key: "0" },
-                { key: "1" },
-                { key: "2" },
-                { key: "3" },
-                { key: "4" },
-                { key: "5" },
-                { key: "6" },
-                { key: "7" },
-                { key: "8" },
-                { key: "9" },
-              ]}
-              pagination={false}
-              showHeader={false}
-              className={styles.table}
-            />
-          </div>
+                dataIndex: "title",
+              },
+              {
+                title: "创建日期",
+                width: 180,
+                render: (text, record) => {
+                  return <p className={styles.text2}>12/06/2020</p>;
+                },
+                sorter: (a, b) => (a?.size - b?.size > 0 ? 1 : -1),
+                dataIndex: "createDate",
+              },
+              {
+                title: "创建人",
+                width: 176,
+                render: (text, record) => {
+                  return (
+                    <div className={styles.tD2}>
+                      <Avatar
+                        size="small"
+                        src="https://sf6-cdn-tos.douyinstatic.com/obj/eden-cn/ptlz_zlp/ljhwZthlaukjlkulzlp/root-web-sites/avatarDemo.jpeg"
+                        color="blue"
+                        className={styles.avatar}
+                      >
+                        示例
+                      </Avatar>
+                      <p className={styles.text3}>Theresa Webb</p>
+                    </div>
+                  );
+                },
+                dataIndex: "creator",
+              },
+              {
+                title: "描述",
+                width: 161,
+                render: (text, record) => {
+                  return <p className={styles.text4}>San Juan</p>;
+                },
+                dataIndex: "description",
+              },
+              {
+                title: "操作",
+                width: 149,
+                render: (text, record) => {
+                  return (
+                    <Button
+                      theme="borderless"
+                      icon={<IconMore />}
+                      className={styles.button}
+                    />
+                  );
+                },
+                dataIndex: "operate",
+              },
+            ]}
+            dataSource={[
+              { key: "0" },
+              { key: "1" },
+              { key: "2" },
+              { key: "3" },
+              { key: "4" },
+              { key: "5" },
+              { key: "6" },
+              { key: "7" },
+              { key: "8" },
+              { key: "9" },
+            ]}
+            pagination={{ showSizeChanger: true, pageSize: 10, showTotal: true }}
+            className={styles.table}
+          />
         </div>
       </div>
     </div>
