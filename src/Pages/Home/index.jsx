@@ -1,4 +1,4 @@
-import React, { Component, useState } from "react";
+import React, { Component, useState, useRef } from "react";
 import { Nav, Avatar, Form, Checkbox, Button, Radio, RadioGroup, Space, DatePicker, Calendar } from '@douyinfe/semi-ui';
 import { IconSemiLogo, IconFeishuLogo, IconHelpCircle, IconBell } from '@douyinfe/semi-icons';
 import styles from '../../index.css';
@@ -27,103 +27,114 @@ const MouseDraggableCalendar = ({ mode, calendarDisplayValue }) => {
     overflow: 'hidden',
   };
 
-  const [events, setEvents] = useState([
-    {
-      key: '0',
-      start: new Date(2019, 5, 25, 14, 45, 0),
-      end: new Date(2019, 6, 26, 6, 18, 0),
-      children: <div style={dailyEventStyle}>6月25日 14:45 ~ 7月26日 6:18</div>,
-    },
-    {
-      key: '1',
-      start: new Date(2019, 6, 18, 10, 0, 0),
-      end: new Date(2019, 6, 30, 8, 0, 0),
-      children: <div style={allDayStyle}>7月18日 10:00 ~ 7月30日 8:00</div>,
-    },
-    {
-      key: '2',
-      start: new Date(2019, 6, 19, 20, 0, 0),
-      end: new Date(2019, 6, 23, 14, 0, 0),
-      children: <div style={allDayStyle}>7月19日 20:00 ~ 7月23日 14:00</div>,
-    },
-    {
-      key: '3',
-      start: new Date(2019, 6, 21, 6, 0, 0),
-      end: new Date(2019, 6, 25, 6, 0, 0),
-      children: <div style={allDayStyle}>7月21日 6:00 ~ 7月25日 6:00</div>,
-    },
-    {
-      key: '4',
-      allDay: true,
-      start: new Date(2019, 6, 22, 8, 0, 0),
-      children: <div style={allDayStyle}>7月22日 全天</div>,
-    },
-    {
-      key: '5',
-      start: new Date(2019, 6, 22, 9, 0, 0),
-      end: new Date(2019, 6, 23, 23, 0, 0),
-      children: <div style={allDayStyle}>7月22日 9:00 ~ 7月23日 23:00</div>,
-    },
-    {
-      key: '6',
-      start: new Date(2019, 6, 23, 8, 32, 0),
-      end: new Date(2019, 6, 23, 8, 42, 0),
-      children: <div style={dailyEventStyle}>7月23日 8:32</div>,
-    },
-    {
-      key: '7',
-      start: new Date(2019, 6, 23, 14, 30, 0),
-      end: new Date(2019, 6, 23, 20, 0, 0),
-      children: <div style={dailyEventStyle}>7月23日 14:30-20:00</div>,
-    },
-    {
-      key: '8',
-      start: new Date(2019, 6, 25, 8, 0, 0),
-      end: new Date(2019, 6, 27, 6, 0, 0),
-      children: <div style={allDayStyle}>7月25日 8:00 ~ 7月27日 6:00</div>,
-    },
-    {
-      key: '9',
-      start: new Date(2019, 6, 26, 10, 0, 0),
-      end: new Date(2019, 6, 27, 16, 0, 0),
-      children: <div style={allDayStyle}>7月26日 10:00 ~ 7月27日 16:00</div>,
-    },
-  ]);
+  const [events, setEvents] = useState([]);
+  const calendarRef = useRef(null);
+  const [draggingEvent, setDraggingEvent] = useState(null);
 
-  const dateRender = (dateString) => {
-    if (dateString === new Date(2019, 6, 23).toString()) {
-      return (
-        <>
-          <div
-            style={{ ...dailyEventStyle, top: '500px', height: 50 }}
-          >
-            吃饭 🍰
-          </div>
-          <div
-            style={{ ...dailyEventStyle, top: '0', height: 400 }}
-          >
-            睡觉 😪
-          </div>
-          <div
-            style={{ ...dailyEventStyle, top: '700px', height: 100 }}
-          >
-            打豆豆 🎮
-          </div>
-        </>
-      );
-    } else {
-      return null;
+  const handleDateGridClick = (e) => {
+    const calendarElement = calendarRef.current;
+    if (!calendarElement) return;
+
+    const rect = calendarElement.getBoundingClientRect();
+    const clickX = e.clientX - rect.left;
+    const clickY = e.clientY - rect.top; 
+
+    const dayWidth = rect.width / (mode === 'week' ? 7 : 1); // Width of each day column for week view
+    let clickedDate = new Date(calendarDisplayValue);
+
+    if (mode === 'day' || mode === 'week') {
+      const clickedDayIndex = Math.floor(clickX / dayWidth);
+      if (mode === 'week') {
+        clickedDate.setDate(calendarDisplayValue.getDate() - calendarDisplayValue.getDay() + clickedDayIndex);
+      }
+
+      const hoursInDay = 24;
+      const hourHeight = rect.height / hoursInDay;
+      const clickedHour = Math.floor(clickY / hourHeight); // Adjusting for 5-hour difference
+      const clickedMinutes = ((clickY % hourHeight) >= 30) ? 30 : 0;
+
+      if (clickedHour < 0 || clickedHour >= 24) return;
+
+      const newEvent = {
+        key: Date.now().toString(),
+        start: new Date(
+          clickedDate.getFullYear(),
+          clickedDate.getMonth(),
+          clickedDate.getDate(),
+          clickedHour,
+          clickedMinutes
+        ),
+        end: new Date(
+          clickedDate.getFullYear(),
+          clickedDate.getMonth(),
+          clickedDate.getDate(),
+          clickedHour + 1,
+          clickedMinutes
+        ),
+        children: (
+          <div style={dailyEventStyle}>{`${clickedDate.getMonth() + 1}月${clickedDate.getDate()}日 ${clickedHour}:${clickedMinutes.toString().padStart(2, '0')}`}</div>
+        ),
+      };
+
+      setEvents([...events, newEvent]);
+    } else if (mode === 'month') {
+      const clickedDayIndex = Math.floor(clickX / dayWidth);
+      clickedDate.setDate(calendarDisplayValue.getDate() - calendarDisplayValue.getDay() + clickedDayIndex);
+
+      const newEvent = {
+        key: Date.now().toString(),
+        start: new Date(clickedDate.getFullYear(), clickedDate.getMonth(), clickedDate.getDate(), 0, 0),
+        end: new Date(clickedDate.getFullYear(), clickedDate.getMonth(), clickedDate.getDate(), 23, 59),
+        children: (
+          <div style={allDayStyle}>{`${clickedDate.getMonth() + 1}月${clickedDate.getDate()}日 - All Day Event`}</div>
+        ),
+      };
+
+      setEvents([...events, newEvent]);
     }
   };
 
+  const handleMouseDown = (e, eventId) => {
+    setDraggingEvent(eventId);
+  };
+
+  const handleMouseMove = (e) => {
+    if (!draggingEvent) return;
+
+    const calendarElement = calendarRef.current;
+    const rect = calendarElement.getBoundingClientRect();
+    const mouseY = e.clientY - rect.top + window.scrollY; // Adjust for scroll position
+    const hourHeight = 60;
+    const minHeight = 20;
+
+    const newDuration = Math.max(minHeight, Math.round(mouseY / hourHeight) * 20);
+
+    setEvents((prevEvents) =>
+      prevEvents.map((event) =>
+        event.key === draggingEvent ? { ...event, duration: newDuration } : event
+      )
+    );
+  };
+
+  const handleMouseUp = () => {
+    setDraggingEvent(null);
+  };
+
   return (
-    <Calendar 
-      height={700} 
-      mode={mode} 
-      displayValue={calendarDisplayValue} 
-      events={events} 
-      dateGridRender={dateRender} 
-    />
+    <div
+      ref={calendarRef}
+      onClick={handleDateGridClick}
+      onMouseMove={handleMouseMove}
+      onMouseUp={handleMouseUp}
+      style={{ position: 'relative', height: '700px', width: '100%', cursor: 'pointer' }}
+    >
+      <Calendar
+        height={700}
+        mode={mode}
+        displayValue={calendarDisplayValue}
+        events={events}
+      />
+    </div>
   );
 };
 
@@ -188,7 +199,6 @@ class CustomComponent extends Component {
               <Radio value={'day'}>日视图</Radio>
               <Radio value={'week'}>周视图</Radio>
               <Radio value={'month'}>月视图</Radio>
-              <Radio value={'range'}>多日视图</Radio>
             </RadioGroup>
             <DatePicker value={displayValue} onChange={this.onChangeDate} style={{ width: '100%' }} />
             <MouseDraggableCalendar mode={mode} calendarDisplayValue={displayValue} />
