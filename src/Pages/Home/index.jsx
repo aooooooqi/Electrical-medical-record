@@ -171,7 +171,7 @@ class CustomComponent extends Component {
     super();
     this.state = {
       mode: 'week',
-      displayValue: new Date(2019, 6, 23, 8, 32, 0),
+      displayValue: new Date(), // 使用当前本地时间作为初始显示值
     };
   }
 
