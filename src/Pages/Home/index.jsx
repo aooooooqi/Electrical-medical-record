@@ -31,6 +31,33 @@ const MouseDraggableCalendar = ({ mode, calendarDisplayValue }) => {
   const calendarRef = useRef(null);
   const [draggingEvent, setDraggingEvent] = useState(null);
 
+  const handleCalendarClick = (e, date) => {
+    console.log(e, date);
+    const newEvent = {
+      key: Date.now().toString(),
+      start: new Date(
+        date.getFullYear(),
+        date.getMonth(),
+        date.getDate(),
+        date.getHours(),
+        date.getMinutes()
+      ),
+      end: new Date(
+        date.getFullYear(),
+        date.getMonth(),
+        date.getDate(),
+        date.getHours() + 1,
+        date.getMinutes()
+      ),
+      children: (
+        <div style={dailyEventStyle}>{`${date.getMonth() + 1}月${date.getDate()}日 ${date.getHours()}:${date.getMinutes().toString().padStart(2, '0')}`}</div>
+      ),
+    };
+
+    setEvents([...events, newEvent]);
+
+  }
+
   const handleDateGridClick = (e) => {
     const calendarElement = calendarRef.current;
     if (!calendarElement) return;
@@ -123,7 +150,7 @@ const MouseDraggableCalendar = ({ mode, calendarDisplayValue }) => {
   return (
     <div
       ref={calendarRef}
-      onClick={handleDateGridClick}
+      // onClick={handleDateGridClick}
       onMouseMove={handleMouseMove}
       onMouseUp={handleMouseUp}
       style={{ position: 'relative', height: '700px', width: '100%', cursor: 'pointer' }}
@@ -133,6 +160,7 @@ const MouseDraggableCalendar = ({ mode, calendarDisplayValue }) => {
         mode={mode}
         displayValue={calendarDisplayValue}
         events={events}
+        onClick={handleCalendarClick}
       />
     </div>
   );
