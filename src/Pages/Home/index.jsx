@@ -1,18 +1,18 @@
-import React, { Component, useState, useRef } from "react";
+import React, { Component, useState, useRef, useEffect } from "react";
 import {
   Nav,
   Avatar,
   Form,
-  Checkbox,
   Button,
   Radio,
   RadioGroup,
   Space,
   DatePicker,
   Calendar,
-  Modal,
   Input,
   Card,
+  Popover,
+  Select,
 } from "@douyinfe/semi-ui";
 import {
   IconSemiLogo,
@@ -24,61 +24,105 @@ import styles from "../../index.css";
 
 const MouseDraggableCalendar = ({ mode, calendarDisplayValue }) => {
   const [events, setEvents] = useState([]);
-  const [isModalVisible, setIsModalVisible] = useState(false);
-  const [newEventTitle, setNewEventTitle] = useState("");
-  const [selectedDate, setSelectedDate] = useState(null);
   const [viewingEvent, setViewingEvent] = useState(null);
+  const [popoverVisible, setPopoverVisible] = useState(false);
+  const [popoverPosition, setPopoverPosition] = useState("right");
   const calendarRef = useRef(null);
 
   const handleCalendarClick = (e, date) => {
-    setSelectedDate(date);
-    setIsModalVisible(true);
-  };
-
-  const handleAddCustomEvent = () => {
-    if (selectedDate && newEventTitle) {
-      const startHour = selectedDate.getHours();
-      const startMinute = selectedDate.getMinutes().toString().padStart(2, '0');
+    if (date) {
+      const startHour = date.getHours();
+      const startMinute = date.getMinutes().toString().padStart(2, '0');
       const endHour = (startHour + 1) % 24;
       const endMinute = startMinute;
 
       const newEvent = {
         key: Date.now().toString(),
-        title: newEventTitle,
+        title: "untitled",
         start: new Date(
-          selectedDate.getFullYear(),
-          selectedDate.getMonth(),
-          selectedDate.getDate(),
+          date.getFullYear(),
+          date.getMonth(),
+          date.getDate(),
           startHour,
-          selectedDate.getMinutes()
+          date.getMinutes()
         ),
         end: new Date(
-          selectedDate.getFullYear(),
-          selectedDate.getMonth(),
-          selectedDate.getDate(),
+          date.getFullYear(),
+          date.getMonth(),
+          date.getDate(),
           endHour,
-          selectedDate.getMinutes()
+          date.getMinutes()
         ),
-        children: (
-          <Card
-            shadows='hover'
-            style={{ height: '100%', width: '100%', border: '1px solid #1890ff' }}
-            bodyStyle={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-            onClick={() => handleCardClick(newEvent)}
-          >
-            {newEventTitle} ({startHour}:{startMinute} - {endHour}:{endMinute})
-          </Card>
-        ),
+        participants: [],
+        style: {
+          width: '100vw',
+          height: '90vh'
+        },
+        isNew: true,
       };
-
-      setEvents([...events, newEvent]);
-      setIsModalVisible(false);
-      setNewEventTitle("");
+      determinePopoverPosition(e.target);
+      
+      setEvents((prevEvents) => [...prevEvents, newEvent]);
+      setViewingEvent(newEvent);
+      setPopoverVisible(true);
     }
   };
 
-  const handleCardClick = (event) => {
+  const handleCardClick = (event, e) => {
     setViewingEvent(event);
+    determinePopoverPosition(e.target);
+    setPopoverVisible(true);
+  };
+
+  const closePopover = () => {
+    if (viewingEvent && viewingEvent.isNew) {
+      setEvents((prevEvents) => prevEvents.filter(event => event.key !== viewingEvent.key));
+    }
+    setViewingEvent(null);
+    setPopoverVisible(false);
+  };
+
+  const determinePopoverPosition = (eventElement) => {
+    if (eventElement) {
+      const rect = eventElement.getBoundingClientRect();
+      const windowWidth = window.innerWidth;
+      const windowHeight = window.innerHeight;
+
+      let position = "right";
+
+      if (rect.right + 300 > windowWidth) {
+        position = "left";
+      } else if (rect.left < 300) {
+        position = "right";
+      }
+
+      if (rect.bottom + 300 > windowHeight) {
+        position = "top";
+      }
+
+      setPopoverPosition(position);
+    }
+  };
+
+  const handleFormSubmit = (values) => {
+    const updatedEvents = events.map((event) =>
+      event.key === viewingEvent.key
+        ? {
+            ...event,
+            title: values.name || "untitled",
+            start: values.startTime,
+            end: values.endTime,
+            participants: values.participants,
+            isNew: false,
+          }
+        : event
+    );
+
+    setEvents(updatedEvents);
+
+    // 保存后清空 viewingEvent
+    setViewingEvent(null);
+    setPopoverVisible(false);
   };
 
   return (
@@ -90,33 +134,77 @@ const MouseDraggableCalendar = ({ mode, calendarDisplayValue }) => {
         height={700}
         mode={mode}
         displayValue={calendarDisplayValue}
-        events={events}
+        events={events.map(event => ({
+          ...event,
+          children: (
+            <Popover
+              content={
+                <Form
+                  onSubmit={handleFormSubmit}
+                  initValues={{
+                    name: event.title,
+                    startTime: event.start,
+                    endTime: event.end,
+                    participants: event.participants,
+                  }}
+                >
+                  <Form.Input
+                    field="name"
+                    label="Event Title"
+                    style={{ marginBottom: 12 }}
+                    placeholder="Enter event title"
+                  />
+                  <Form.DatePicker
+                    field="startTime"
+                    type="dateTime"
+                    label="Start Time"
+                    style={{ marginBottom: 12 }}
+                  />
+                  <Form.DatePicker
+                    field="endTime"
+                    type="dateTime"
+                    label="End Time"
+                    style={{ marginBottom: 12 }}
+                  />
+                  <Form.Select
+                    field="participants"
+                    label="Add Participants"
+                    style={{ width: "100%", marginBottom: 12 }}
+                    multiple
+                  >
+                    <Select.Option value="昊民">昊民</Select.Option>
+                    <Select.Option value="莫桐">莫桐</Select.Option>
+                    <Select.Option value="元硕">元硕</Select.Option>
+                  </Form.Select>
+                  <Button theme="solid" type="primary" htmlType="submit" style={{ marginRight: 12 }}>
+                    Save Changes
+                  </Button>
+                  <Button theme="border" type="secondary" onClick={closePopover}>
+                    Close
+                  </Button>
+                </Form>
+              }
+              trigger="click"
+              visible={viewingEvent && viewingEvent.key === event.key && popoverVisible}
+              clickToHide={false}
+              getPopupContainer={() => document.body}
+              position={popoverPosition}
+              showArrow
+            >
+              <Card
+                shadows="hover"
+                style={{ height: '100%', width: '100%', border: '1px solid #1890ff' }}
+                bodyStyle={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                onClick={(e) => handleCardClick(event, e)}
+                data-event-key={event.key}
+              >
+                {event.title} ({event.start.getHours()}:{event.start.getMinutes().toString().padStart(2, '0')} - {event.end.getHours()}:{event.end.getMinutes().toString().padStart(2, '0')})
+              </Card>
+            </Popover>
+          )
+        }))}
         onClick={handleCalendarClick}
       />
-      <Modal
-        title="Add Custom Event"
-        visible={isModalVisible}
-        onOk={handleAddCustomEvent}
-        onCancel={() => setIsModalVisible(false)}
-      >
-        <Input
-          placeholder="Enter event title"
-          value={newEventTitle}
-          onChange={(value) => setNewEventTitle(value)}
-        />
-      </Modal>
-      {viewingEvent && (
-        <Card
-          title="Event Details"
-          style={{ maxWidth: 600, margin: '10px auto' }}
-          bodyStyle={{ padding: '20px' }}
-        >
-          <p>Event Title: {viewingEvent.title}</p>
-          <p>Start Time: {viewingEvent.start.toLocaleTimeString()}</p>
-          <p>End Time: {viewingEvent.end.toLocaleTimeString()}</p>
-          <p>Additional information about the event can go here.</p>
-        </Card>
-      )}
     </div>
   );
 };
@@ -205,7 +293,6 @@ class CustomComponent extends Component {
         >
           <Space vertical align="start" style={{ width: "100%" }}>
             <RadioGroup onChange={this.onSelect} value={mode} type="button">
-              <Radio value={"day"}>日视图</Radio>
               <Radio value={"week"}>周视图</Radio>
               <Radio value={"month"}>月视图</Radio>
             </RadioGroup>

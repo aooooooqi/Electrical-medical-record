@@ -1,9 +1,18 @@
 import React from "react";
-import { Nav, Avatar, Form, Checkbox, Button } from '@douyinfe/semi-ui';
-import { IconSemiLogo, IconFeishuLogo, IconHelpCircle, IconBell } from '@douyinfe/semi-icons';
-import styles from './index.module.scss';
+import { Nav, Avatar, Form, Checkbox, Button } from "@douyinfe/semi-ui";
+import { IconSemiLogo, IconFeishuLogo, IconHelpCircle, IconBell } from "@douyinfe/semi-icons";
+import { useNavigate } from "react-router-dom";
+import styles from "./index.module.scss";
 
 const Component = () => {
+  const navigate = useNavigate(); // 使用 useNavigate 钩子来进行页面跳转
+
+  const handleLogin = () => {
+    // 处理登录逻辑，例如验证用户名和密码
+    // 假设验证成功后，跳转到 Home 页面
+    navigate("/Home");
+  };
+
   return (
     <div className={styles.frame}>
       <Nav
@@ -63,6 +72,7 @@ const Component = () => {
                 label={{ text: "密码" }}
                 field="field1"
                 placeholder="输入密码"
+                type="password" // 添加 type 为 password，确保输入的密码不会明文显示
                 fieldStyle={{ padding: 0 }}
                 style={{ width: 440 }}
                 className={styles.formField}
@@ -71,7 +81,7 @@ const Component = () => {
             <Checkbox type="default" className={styles.checkbox}>
               记住我
             </Checkbox>
-            <Button theme="solid" className={styles.button}>
+            <Button theme="solid" className={styles.button} onClick={handleLogin}>
               登录
             </Button>
           </div>
@@ -79,6 +89,6 @@ const Component = () => {
       </div>
     </div>
   );
-}
+};
 
 export default Component;
