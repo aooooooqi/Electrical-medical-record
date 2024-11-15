@@ -1,11 +1,35 @@
 import React from "react";
+import { useParams } from 'react-router-dom';
 import { Nav, Avatar, Tag, Descriptions, Select, TextArea, Button, Table } from '@douyinfe/semi-ui';
-import { IconSemiLogo, IconFeishuLogo, IconHelpCircle, IconBell, IconMapPin, IconTiktokLogo, IconMail, IconUserCircle } from '@douyinfe/semi-icons';
+import { IconSemiLogo, IconFeishuLogo, IconHelpCircle, IconBell, IconMapPin, IconMail, IconUserCircle } from '@douyinfe/semi-icons';
 import styles from './index.module.scss';
 
-const Component = () => {
+const ClientDetail = () => {
+  const { id } = useParams(); // 获取客户的 ID
+  // 模拟客户详细数据，可以从服务器获取数据
+  const customerDetails = {
+    id: id,
+    name: "Richard Hendricks",
+    username: "@RichardHendricks",
+    location: "中国 北京",
+    email: "richard@gmail.com",
+    description: "长期头痛，需进一步检查",
+    tags: ["新病人", "重点观察", "VIP"],
+    contact: {
+      appleAccount: "richard@icloud.com",
+      googleAccount: "richard@gmail.com",
+      instagram: "richard_aaa",
+      facebook: "Richard Hendricks"
+    },
+    medicalHistory: [
+      { key: "0", date: "2024-11-01", treatment: "偏头痛，开具药物治疗", doctor: "Dr. Smith" },
+      { key: "1", date: "2024-11-08", treatment: "随访，病情好转", doctor: "Dr. Smith" },
+      { key: "2", date: "2024-11-15", treatment: "康复检查，一切正常", doctor: "Dr. Johnson" },
+    ]
+  };
+
   return (
-    <div className={styles.frame}>
+    <div className={styles.frame} style={{ width: '100%', maxWidth: '1200px', margin: '0 auto' }}>
       <Nav
         mode="horizontal"
         header={{
@@ -29,9 +53,9 @@ const Component = () => {
         }
         className={styles.nav}
       >
-        <Nav.Item itemKey="Home" link="/Home" text="Home" />
-          <Nav.Item itemKey="Client_detail" link="/Client_detail" text="Client Detail" />
-          <Nav.Item itemKey="Session_details" link="/Session_details" text="Session Details" />
+        <Nav.Item itemKey="Home" link="/" text="首页" />
+        <Nav.Item itemKey="Client_detail" link="/client_detail" text="客户详情" />
+        <Nav.Item itemKey="Session_details" link="/Session_details" text="病人信息" />
       </Nav>
       <div className={styles.main}>
         <div className={styles.card}>
@@ -47,62 +71,50 @@ const Component = () => {
               </Avatar>
             </div>
             <div className={styles.name}>
-              <p className={styles.richardHendricks}>Richard Hendricks</p>
-              <p className={styles.aRichardHendricks}>@RichardHendricks</p>
+              <p className={styles.richardHendricks}>{customerDetails.name}</p>
+              <p className={styles.aRichardHendricks}>{customerDetails.username}</p>
             </div>
           </div>
           <div className={styles.main2}>
             <div className={styles.descriptions}>
               <div className={styles.frame4152}>
                 <IconMapPin className={styles.semiIconsMapPin} />
-                <p className={styles.value}>中国 北京</p>
-              </div>
-              <div className={styles.frame4152}>
-                <IconTiktokLogo className={styles.semiIconsMapPin} />
-                <p className={styles.value2}>抖音认证</p>
+                <p className={styles.value}>{customerDetails.location}</p>
               </div>
               <div className={styles.frame4154}>
                 <IconMail className={styles.semiIconsMapPin} />
-                <p className={styles.value3}>richard@gmail.com</p>
+                <p className={styles.value3}>{customerDetails.email}</p>
               </div>
               <div className={styles.frame4155}>
                 <IconUserCircle className={styles.semiIconsMapPin} />
-                <p className={styles.value4}>
-                  首席吃货，擅长算法，特别是
-                  <br />
-                  视频压缩算法
-                </p>
+                <p className={styles.value4}>病情描述：{customerDetails.description}</p>
               </div>
             </div>
             <div className={styles.tags}>
-              <Tag size="large" color="blue" className={styles.tag}>
-                官方话题
-              </Tag>
-              <Tag size="large" color="blue" className={styles.tag}>
-                商业化
-              </Tag>
-              <Tag size="large" color="orange" className={styles.tag}>
-                大 V
-              </Tag>
+              {customerDetails.tags.map((tag, index) => (
+                <Tag size="large" color={index === 2 ? "orange" : "blue"} className={styles.tag} key={index}>
+                  {tag}
+                </Tag>
+              ))}
             </div>
           </div>
         </div>
         <div className={styles.panel}>
           <div className={styles.frame2}>
-            <p className={styles.text}>私信管理</p>
+            <p className={styles.text}>病人联系信息</p>
             <div className={styles.frame4160}>
               <Descriptions
                 data={[
-                  { key: "Apple 账号", value: "richard@icloud.com" },
-                  { key: "Google 账号", value: "richard@gmail.com" },
+                  { key: "Apple 账号", value: customerDetails.contact.appleAccount },
+                  { key: "Google 账号", value: customerDetails.contact.googleAccount },
                 ]}
                 align="justify"
                 className={styles.descriptions2}
               />
               <Descriptions
                 data={[
-                  { key: "Instagram", value: "richard_aaa" },
-                  { key: "Facebook", value: "Richard Hendricks" },
+                  { key: "Instagram", value: customerDetails.contact.instagram },
+                  { key: "Facebook", value: customerDetails.contact.facebook },
                 ]}
                 align="justify"
                 className={styles.descriptions2}
@@ -112,24 +124,18 @@ const Component = () => {
           <div className={styles.components}>
             <div className={styles.inputs}>
               <Select
-                placeholder="抖音小助手"
+                placeholder="选择病人状态"
                 maxTagCount={3}
                 className={styles.selectTrigger}
               >
-                <Select.Option value="hotsoon">火山</Select.Option>
-                <Select.Option value="douyin">抖音</Select.Option>
-                <Select.Option value="pipixia">皮皮虾</Select.Option>
-                <Select.Option value="douyinlite">抖音极速版</Select.Option>
-                <Select.Option disabled={true} value="duoshan">
-                  多闪
-                </Select.Option>
-                <Select.Option value="toutiao">今日头条</Select.Option>
-                <Select.Option value="feishuproject">飞书项目</Select.Option>
-                <Select.Option value="xigua">西瓜视频</Select.Option>
+                <Select.Option value="new">新病人</Select.Option>
+                <Select.Option value="follow-up">随访</Select.Option>
+                <Select.Option value="in-treatment">治疗中</Select.Option>
+                <Select.Option value="recovery">康复中</Select.Option>
               </Select>
               <TextArea
                 maxCount={100}
-                placeholder="占位文本"
+                placeholder="备注"
                 validateStatus="default"
                 className={styles.textArea}
               />
@@ -138,51 +144,39 @@ const Component = () => {
                 icon={<IconFeishuLogo />}
                 className={styles.button}
               >
-                发送
+                更新信息
               </Button>
             </div>
             <Table
               columns={[
                 {
                   render: (text, record) => {
-                    return (
-                      <div className={styles.tD}>
-                        <div className={styles.rectangle3}>
-                          <img
-                            src="https://lf26-static.semi.design/obj/semi-tos/template/e43151ee-6635-4411-accf-0d8df950c400.svg"
-                            className={styles.leftIcon}
-                          />
-                        </div>
-                        <p className={styles.text2}>系统通知</p>
-                      </div>
-                    );
+                    return <p className={styles.text4}>{record.date}</p>;
                   },
-                  title: "发信人",
-                  width: 147,
-                  dataIndex: "column0",
+                  title: "日期",
+                  width: 150,
+                  dataIndex: "date",
                 },
                 {
                   render: (text, record) => {
                     return (
-                      <p className={styles.text3}>
-                        #哪吒之魔童降世# 话题活动开讲啦！根据活动规则，恭喜 13 位...
-                      </p>
+                      <p className={styles.text2}>{record.treatment}</p>
                     );
                   },
-                  title: "私信内容",
-                  width: 180,
-                  dataIndex: "column1",
+                  title: "诊断与治疗",
+                  width: 400,
+                  dataIndex: "treatment",
                 },
                 {
                   render: (text, record) => {
-                    return <p className={styles.text4}>2020-02-02 05:13</p>;
+                    return <p className={styles.text3}>{record.doctor}</p>;
                   },
-                  title: "发信时间",
-                  width: 192,
-                  dataIndex: "column2",
+                  title: "医生",
+                  width: 150,
+                  dataIndex: "doctor",
                 },
               ]}
-              dataSource={[{ key: "0" }, { key: "1" }, { key: "2" }]}
+              dataSource={customerDetails.medicalHistory}
               pagination={{ showSizeChanger: true, pageSize: 3, showTotal: true }}
               className={styles.table}
             />
@@ -193,4 +187,4 @@ const Component = () => {
   );
 }
 
-export default Component;
+export default ClientDetail;

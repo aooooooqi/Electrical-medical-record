@@ -1,9 +1,51 @@
-import React from "react";
-import { Nav, Avatar, Descriptions, Table, Button } from '@douyinfe/semi-ui';
-import { IconSemiLogo, IconFeishuLogo, IconHelpCircle, IconBell, IconUserCircle, IconMore, IconSort } from '@douyinfe/semi-icons';
+import React, { useState } from "react";
+import { Routes, Route, useNavigate, useParams } from 'react-router-dom';
+import { Nav, Avatar, Descriptions, Table, Button, Modal, Form } from '@douyinfe/semi-ui';
+import { IconSemiLogo, IconFeishuLogo, IconHelpCircle, IconBell, IconUserCircle, IconMore, IconPlus } from '@douyinfe/semi-icons';
 import styles from './index.module.scss';
 
 const Component = () => {
+  const navigate = useNavigate();
+
+  // 定义状态来存储客户数据和模态框可见性
+  const [customers, setCustomers] = useState([
+    { key: "0", title: "Abstergo Ltd.", createDate: "12/06/2020", creator: "Theresa Webb", description: "San Juan" },
+    { key: "1", title: "Umbrella Corp.", createDate: "01/09/2021", creator: "Chris Redfield", description: "Raccoon City" }
+  ]);
+  const [isModalVisible, setModalVisible] = useState(false);
+  const [formApi, setFormApi] = useState(null);
+
+  // 显示模态框
+  const showModal = () => {
+    setModalVisible(true);
+  };
+
+  // 关闭模态框
+  const closeModal = () => {
+    setModalVisible(false);
+    if (formApi) {
+      formApi.reset();
+    }
+  };
+
+  // 处理表单提交
+  const handleSubmit = (values) => {
+    const newCustomer = {
+      key: (customers.length + 1).toString(),
+      title: values.companyName,
+      createDate: values.createDate,
+      creator: values.creator,
+      description: values.description
+    };
+    setCustomers([...customers, newCustomer]);
+    closeModal();
+  };
+
+  // 处理跳转到客户详情页
+  const goToClientDetail = (customerKey) => {
+    navigate(`/client_detail/${customerKey}`);
+  };
+
   return (
     <div className={styles.frame}>
       <Nav
@@ -29,9 +71,9 @@ const Component = () => {
         }
         className={styles.nav}
       >
-        <Nav.Item itemKey="Home" link="/Home" text="Home" />
-          <Nav.Item itemKey="Client_detail" link="/Client_detail" text="Client Detail" />
-          <Nav.Item itemKey="Session_details" link="/Session_details" text="Session Details" />
+        <Nav.Item itemKey="Home" link="/" text="首页" />
+        <Nav.Item itemKey="Client_detail" link="/client_detail" text="客户详情" />
+        <Nav.Item itemKey="Session_details" link="/Session_details" text="病人信息" />
       </Nav>
       <div className={styles.content}>
         <div className={styles.frame18637}>
@@ -40,31 +82,19 @@ const Component = () => {
               <IconUserCircle className={styles.semiIconsUserCircle} />
             </div>
             <Descriptions
-              data={[{ key: "用户总数量", value: "12,000" }]}
+              data={[{ key: "用户总数量", value: customers.length.toString() }]}
               row={true}
               className={styles.descriptions}
             />
           </div>
-          <div className={styles.frame1321314182}>
-            <div className={styles.buttonOnlyIconSecond}>
-              <IconUserCircle className={styles.semiIconsUserCircle} />
-            </div>
-            <Descriptions
-              data={[{ key: "管理员数量", value: "12,000" }]}
-              row={true}
-              className={styles.descriptions}
-            />
-          </div>
-          <div className={styles.frame1321314182}>
-            <div className={styles.buttonOnlyIconSecond2}>
-              <IconUserCircle className={styles.semiIconsUserCircle} />
-            </div>
-            <Descriptions
-              data={[{ key: "活跃用户数量", value: "12,000" }]}
-              row={true}
-              className={styles.descriptions}
-            />
-          </div>
+          <Button
+            type="primary"
+            icon={<IconPlus />}
+            onClick={showModal}
+            style={{ alignSelf: "center" }}
+          >
+            添加客户
+          </Button>
         </div>
         <div className={styles.customers}>
           <p className={styles.item}>Customers</p>
@@ -74,12 +104,16 @@ const Component = () => {
                 title: "标题",
                 render: (text, record) => {
                   return (
-                    <div className={styles.tD}>
+                    <div
+                      className={styles.tD}
+                      onClick={() => goToClientDetail(record.key)}
+                      style={{ cursor: 'pointer' }}
+                    >
                       <img
                         src="https://lf9-static.semi.design/obj/semi-tos/template/95c73b19-d0b2-41fb-a5a2-36ed9a9136a3.png"
                         className={styles.rectangle3}
                       />
-                      <p className={styles.text}>Abstergo Ltd.</p>
+                      <p className={styles.text}>{record.title}</p>
                     </div>
                   );
                 },
@@ -89,9 +123,9 @@ const Component = () => {
                 title: "创建日期",
                 width: 180,
                 render: (text, record) => {
-                  return <p className={styles.text2}>12/06/2020</p>;
+                  return <p className={styles.text2}>{record.createDate}</p>;
                 },
-                sorter: (a, b) => (a?.size - b?.size > 0 ? 1 : -1),
+                sorter: (a, b) => (new Date(a.createDate) - new Date(b.createDate)),
                 dataIndex: "createDate",
               },
               {
@@ -108,7 +142,7 @@ const Component = () => {
                       >
                         示例
                       </Avatar>
-                      <p className={styles.text3}>Theresa Webb</p>
+                      <p className={styles.text3}>{record.creator}</p>
                     </div>
                   );
                 },
@@ -118,7 +152,7 @@ const Component = () => {
                 title: "描述",
                 width: 161,
                 render: (text, record) => {
-                  return <p className={styles.text4}>San Juan</p>;
+                  return <p className={styles.text4}>{record.description}</p>;
                 },
                 dataIndex: "description",
               },
@@ -137,25 +171,52 @@ const Component = () => {
                 dataIndex: "operate",
               },
             ]}
-            dataSource={[
-              { key: "0" },
-              { key: "1" },
-              { key: "2" },
-              { key: "3" },
-              { key: "4" },
-              { key: "5" },
-              { key: "6" },
-              { key: "7" },
-              { key: "8" },
-              { key: "9" },
-            ]}
+            dataSource={customers}
             pagination={{ showSizeChanger: true, pageSize: 10, showTotal: true }}
             className={styles.table}
           />
         </div>
       </div>
+
+      {/* 添加客户的模态框 */}
+      <Modal
+        title="添加客户"
+        visible={isModalVisible}
+        onCancel={closeModal}
+        onOk={() => formApi.submitForm()}
+      >
+        <Form
+          getFormApi={setFormApi}
+          onSubmit={handleSubmit}
+        >
+          <Form.Input field="companyName" label="公司名称" placeholder="请输入公司名称" required />
+          <Form.Input field="createDate" label="创建日期" placeholder="例如：12/06/2020" required />
+          <Form.Input field="creator" label="创建人" placeholder="请输入创建人姓名" required />
+          <Form.Input field="description" label="描述" placeholder="请输入描述" required />
+        </Form>
+      </Modal>
     </div>
   );
-}
+};
 
-export default Component;
+// 客户详细页面组件
+const ClientDetail = () => {
+  const { id } = useParams(); // 使用 useParams 获取客户 ID
+  return (
+    <div>
+      <h2>客户详情 - ID: {id}</h2>
+      {/* 在这里可以添加更多客户详细信息 */}
+    </div>
+  );
+};
+
+const App = () => {
+  return (
+    <Routes>
+      <Route path="/" element={<Component />} />
+      <Route path="/client_detail/:id" element={<ClientDetail />} />
+    </Routes>
+  );
+};
+
+export default App;

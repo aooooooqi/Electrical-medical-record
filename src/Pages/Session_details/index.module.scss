@@ -3,15 +3,16 @@
   flex-direction: column;
   align-items: center;
   background: var(--semi-color-bg-0);
-  width: 1440px;
-  height: 1042px;
+  width: 100%;  /* 使容器宽度自适应屏幕 */
+  max-width: 1200px;  /* 限制最大宽度 */
+  margin: 0 auto;  /* 使容器居中 */
+  height: auto;  /* 移除固定高度，使其根据内容自适应 */
   overflow: hidden;
   text-align: left;
-  line-height: 28px;
-  letter-spacing: 0.4px;
+  letter-spacing: 0;
   white-space: normal;
-  font-family: Inter;
-  font-weight: 600;
+  color: var(--semi-color-text-0);
+  font-size: 20px;
 }
 
 .nav {
@@ -47,100 +48,57 @@
 .content {
   display: flex;
   flex-direction: column;
-  flex-shrink: 0;
+  flex-grow: 1;
   align-items: flex-start;
-  padding: 25px 71px 171px;
-  width: 1298px;
-  height: 786px;
-  row-gap: 40px;
+  align-self: stretch;
+  padding: 40px 20px;  /* 设置内容的内边距 */
+  width: 100%;
 }
 
 .frame18637 {
   display: flex;
-  flex-shrink: 0;
-  align-items: flex-start;
-  column-gap: 16px;
-  width: 1026px;
-  color: var(--semi-color-white);
-  font-size: 16px;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 24px;
 }
 
 .frame1321314182 {
   display: flex;
-  flex-basis: 0;
-  flex-direction: column;
-  flex-grow: 1;
-  align-items: flex-start;
-  border: 1px solid rgb(var(--semi-grey-1));
+  align-items: center;
+  padding: 16px;
+  background: var(--semi-color-bg-2);
   border-radius: 8px;
-  background: var(--semi-color-bg-1);
-  padding: 15px 15px 15px 23px;
-  height: 98px;
-  overflow: hidden;
-  row-gap: 16px;
+  width: 30%;  /* 使用百分比使其在屏幕上分布均匀 */
 }
 
-.workitemIcon {
-  display: flex;
-  flex-shrink: 0;
-  align-items: center;
-  border-radius: 12px;
-  background: rgb(var(--semi-pink-5));
-  padding: 8px;
-  height: 16px;
-  overflow: hidden;
+.workitemIcon,
+.buttonOnlyIconSecond,
+.buttonOnlyIconSecond2 {
+  margin-right: 16px;
 }
 
 .semiIconsUserCircle {
-  color: var(--semi-color-white);
-  font-size: 16px;
+  font-size: 36px;
+  color: var(--semi-color-primary);
 }
 
 .descriptions {
-  flex-shrink: 0;
-}
-
-.buttonOnlyIconSecond {
-  display: flex;
-  flex-shrink: 0;
-  align-items: center;
-  border-radius: 12px;
-  background: rgb(var(--semi-light-blue-5));
-  padding: 8px;
-  height: 16px;
-  overflow: hidden;
-}
-
-.buttonOnlyIconSecond2 {
-  display: flex;
-  flex-shrink: 0;
-  align-items: center;
-  border-radius: 12px;
-  background: rgb(var(--semi-green-5));
-  padding: 8px;
-  height: 16px;
-  overflow: hidden;
+  flex-grow: 1;
 }
 
 .customers {
-  display: flex;
-  flex-direction: column;
-  flex-shrink: 0;
-  align-items: flex-start;
-  align-self: stretch;
-  color: var(--semi-color-text-0);
-  font-size: 20px;
-  row-gap: 16px;
+  width: 100%;
 }
 
 .item {
-  flex-shrink: 0;
-  min-width: 110px;
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 16px;
 }
 
 .table {
-  flex-shrink: 0;
-  align-self: stretch;
+  width: 100%;  /* 使表格宽度自适应屏幕 */
 }
 
 .tD {
@@ -148,74 +106,36 @@
   align-items: center;
   column-gap: 12px;
   text-align: left;
-  line-height: 20px;
-  letter-spacing: 0;
-  white-space: normal;
-  color: var(--semi-color-text-0);
-  font-family: Inter;
-  font-size: 14px;
-  font-weight: 400;
 }
 
 .rectangle3 {
-  flex-shrink: 0;
-  border-radius: 99px;
   width: 32px;
   height: 32px;
+  border-radius: 4px;
 }
 
 .text {
-  flex-shrink: 0;
-  min-width: 90px;
-  vertical-align: baseline;
+  font-size: 16px;
+  color: var(--semi-color-text-0);
 }
 
-.text2 {
-  min-width: 76px;
-  vertical-align: baseline;
-  text-align: left;
-  line-height: 20px;
-  letter-spacing: -0.14px;
-  white-space: normal;
-  color: var(--semi-color-text-0);
-  font-family: Inter;
+.text2,
+.text4 {
   font-size: 14px;
-  font-weight: 400;
+  color: var(--semi-color-text-2);
 }
 
 .tD2 {
   display: inline-flex;
   align-items: center;
   column-gap: 12px;
-  text-align: left;
-  line-height: 20px;
-  letter-spacing: -0.14px;
-  white-space: normal;
-  color: var(--semi-color-text-0);
-  font-family: Inter;
-  font-size: 14px;
-  font-weight: 400;
 }
 
 .text3 {
-  flex-shrink: 0;
-  min-width: 95px;
-  vertical-align: baseline;
-}
-
-.text4 {
-  min-width: 60px;
-  vertical-align: baseline;
-  text-align: left;
-  line-height: 20px;
-  letter-spacing: -0.14px;
-  white-space: normal;
-  color: var(--semi-color-text-0);
-  font-family: Inter;
   font-size: 14px;
-  font-weight: 400;
+  color: var(--semi-color-text-0);
 }
 
 .button {
-  height: 32px;
+  padding: 0;
 }

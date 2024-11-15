@@ -13,6 +13,7 @@ import {
   Card,
   Popover,
   Select,
+  Modal,
 } from "@douyinfe/semi-ui";
 import {
   IconSemiLogo,
@@ -27,6 +28,7 @@ const MouseDraggableCalendar = ({ mode, calendarDisplayValue }) => {
   const [viewingEvent, setViewingEvent] = useState(null);
   const [popoverVisible, setPopoverVisible] = useState(false);
   const [popoverPosition, setPopoverPosition] = useState("right");
+  const [isModalVisible, setIsModalVisible] = useState(false);
   const calendarRef = useRef(null);
 
   const handleCalendarClick = (e, date) => {
@@ -54,17 +56,11 @@ const MouseDraggableCalendar = ({ mode, calendarDisplayValue }) => {
           date.getMinutes()
         ),
         participants: [],
-        style: {
-          width: '100vw',
-          height: '90vh'
-        },
         isNew: true,
       };
-      determinePopoverPosition(e.target);
-      
-      setEvents((prevEvents) => [...prevEvents, newEvent]);
+
       setViewingEvent(newEvent);
-      setPopoverVisible(true);
+      setIsModalVisible(true); // 打开 Modal
     }
   };
 
@@ -74,55 +70,58 @@ const MouseDraggableCalendar = ({ mode, calendarDisplayValue }) => {
     setPopoverVisible(true);
   };
 
-  const closePopover = () => {
-    if (viewingEvent && viewingEvent.isNew) {
-      setEvents((prevEvents) => prevEvents.filter(event => event.key !== viewingEvent.key));
-    }
-    setViewingEvent(null);
-    setPopoverVisible(false);
-  };
-
   const determinePopoverPosition = (eventElement) => {
     if (eventElement) {
       const rect = eventElement.getBoundingClientRect();
       const windowWidth = window.innerWidth;
-      const windowHeight = window.innerHeight;
-
+  
+      // 默认设置位置为右侧
       let position = "right";
-
+  
+      // 如果右侧空间不足，将位置设为左侧
       if (rect.right + 300 > windowWidth) {
         position = "left";
-      } else if (rect.left < 300) {
+      } 
+      // 如果左侧空间不足且已经设置为左侧，将位置切换回右侧
+      else if (rect.left < 300 && position === "left") {
         position = "right";
       }
-
-      if (rect.bottom + 300 > windowHeight) {
-        position = "top";
-      }
-
+  
       setPopoverPosition(position);
     }
   };
-
   const handleFormSubmit = (values) => {
-    const updatedEvents = events.map((event) =>
-      event.key === viewingEvent.key
-        ? {
-            ...event,
-            title: values.name || "untitled",
-            start: values.startTime,
-            end: values.endTime,
-            participants: values.participants,
-            isNew: false,
-          }
-        : event
-    );
+    let updatedEvents = [];
+
+    if (viewingEvent.isNew) {
+      // 新建事件，添加到事件列表
+      const newEvent = {
+        ...viewingEvent,
+        title: values.name || "untitled",
+        start: values.startTime,
+        end: values.endTime,
+        participants: values.participants,
+        isNew: false,
+      };
+      updatedEvents = [...events, newEvent];
+    } else {
+      // 编辑已存在的事件
+      updatedEvents = events.map((event) =>
+        event.key === viewingEvent.key
+          ? {
+              ...event,
+              title: values.name || "untitled",
+              start: values.startTime,
+              end: values.endTime,
+              participants: values.participants,
+            }
+          : event
+      );
+    }
 
     setEvents(updatedEvents);
-
-    // 保存后清空 viewingEvent
     setViewingEvent(null);
-    setPopoverVisible(false);
+    setIsModalVisible(false);
   };
 
   return (
@@ -137,74 +136,111 @@ const MouseDraggableCalendar = ({ mode, calendarDisplayValue }) => {
         events={events.map(event => ({
           ...event,
           children: (
-            <Popover
-              content={
-                <Form
-                  onSubmit={handleFormSubmit}
-                  initValues={{
-                    name: event.title,
-                    startTime: event.start,
-                    endTime: event.end,
-                    participants: event.participants,
-                  }}
-                >
-                  <Form.Input
-                    field="name"
-                    label="Event Title"
-                    style={{ marginBottom: 12 }}
-                    placeholder="Enter event title"
-                  />
-                  <Form.DatePicker
-                    field="startTime"
-                    type="dateTime"
-                    label="Start Time"
-                    style={{ marginBottom: 12 }}
-                  />
-                  <Form.DatePicker
-                    field="endTime"
-                    type="dateTime"
-                    label="End Time"
-                    style={{ marginBottom: 12 }}
-                  />
-                  <Form.Select
-                    field="participants"
-                    label="Add Participants"
-                    style={{ width: "100%", marginBottom: 12 }}
-                    multiple
-                  >
-                    <Select.Option value="昊民">昊民</Select.Option>
-                    <Select.Option value="莫桐">莫桐</Select.Option>
-                    <Select.Option value="元硕">元硕</Select.Option>
-                  </Form.Select>
-                  <Button theme="solid" type="primary" htmlType="submit" style={{ marginRight: 12 }}>
-                    Save Changes
-                  </Button>
-                  <Button theme="border" type="secondary" onClick={closePopover}>
-                    Close
-                  </Button>
-                </Form>
-              }
-              trigger="click"
-              visible={viewingEvent && viewingEvent.key === event.key && popoverVisible}
-              clickToHide={false}
-              getPopupContainer={() => document.body}
-              position={popoverPosition}
-              showArrow
-            >
-              <Card
-                shadows="hover"
-                style={{ height: '100%', width: '100%', border: '1px solid #1890ff' }}
-                bodyStyle={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-                onClick={(e) => handleCardClick(event, e)}
-                data-event-key={event.key}
+            event.isNew ? null : (
+              <Popover
+                content={
+                  <div>
+                    <p>事件标题: {event.title}</p>
+                    <p>
+                      时间: {event.start.getHours()}:{event.start.getMinutes().toString().padStart(2, '0')} - {event.end.getHours()}:{event.end.getMinutes().toString().padStart(2, '0')}
+                    </p>
+                    <p>参与者: {event.participants.join(', ')}</p>
+                    <Button onClick={() => {
+                      setViewingEvent(event);
+                      setIsModalVisible(true); // 打开 Modal 以编辑事件
+                      setPopoverVisible(false); // 关闭 Popover
+                    }}>
+                      修改
+                    </Button>
+                  </div>
+                }
+                trigger="click"
+                visible={viewingEvent && viewingEvent.key === event.key && popoverVisible}
+                onVisibleChange={(visible) => setPopoverVisible(visible)}
+                getPopupContainer={() => document.body}
+                position={popoverPosition}
+                showArrow
               >
-                {event.title} ({event.start.getHours()}:{event.start.getMinutes().toString().padStart(2, '0')} - {event.end.getHours()}:{event.end.getMinutes().toString().padStart(2, '0')})
-              </Card>
-            </Popover>
+                <Card
+                  shadows="hover"
+                  style={{ height: '100%', width: '100%', border: '1px solid #1890ff' }}
+                  bodyStyle={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                  onClick={(e) => handleCardClick(event, e)}
+                  data-event-key={event.key}
+                >
+                  {event.title} ({event.start.getHours()}:{event.start.getMinutes().toString().padStart(2, '0')} - {event.end.getHours()}:{event.end.getMinutes().toString().padStart(2, '0')})
+                </Card>
+              </Popover>
+            )
           )
         }))}
         onClick={handleCalendarClick}
       />
+
+      {/* Modal 部分 */}
+      {viewingEvent && (
+        <Modal
+          title={viewingEvent.isNew ? "创建新事件" : "编辑事件"}
+          visible={isModalVisible}
+          onCancel={() => {
+            if (viewingEvent.isNew) {
+              setViewingEvent(null);
+            }
+            setIsModalVisible(false);
+          }}
+          footer={null}
+        >
+          <Form
+            onSubmit={handleFormSubmit}
+            initValues={{
+              name: viewingEvent.title,
+              startTime: viewingEvent.start,
+              endTime: viewingEvent.end,
+              participants: viewingEvent.participants,
+            }}
+          >
+            <Form.Input
+              field="name"
+              label="事件标题"
+              style={{ marginBottom: 12 }}
+              placeholder="请输入事件标题"
+            />
+            <Form.DatePicker
+              field="startTime"
+              type="dateTime"
+              label="开始时间"
+              style={{ marginBottom: 12 }}
+            />
+            <Form.DatePicker
+              field="endTime"
+              type="dateTime"
+              label="结束时间"
+              style={{ marginBottom: 12 }}
+            />
+            <Form.Select
+              field="participants"
+              label="添加参与者"
+              style={{ width: "100%", marginBottom: 12 }}
+              multiple
+            >
+              <Select.Option value="昊民">昊民</Select.Option>
+              <Select.Option value="莫桐">莫桐</Select.Option>
+              <Select.Option value="元硕">元硕</Select.Option>
+            </Form.Select>
+            <Button theme="solid" type="primary" htmlType="submit" style={{ marginRight: 12 }}>
+              保存
+            </Button>
+            <Button theme="border" type="secondary" onClick={() => {
+              if (viewingEvent.isNew) {
+                setViewingEvent(null);
+              }
+              setIsModalVisible(false);
+            }}>
+              取消
+            </Button>
+          </Form>
+        </Modal>
+      )}
     </div>
   );
 };
@@ -274,17 +310,9 @@ class CustomComponent extends Component {
           className={styles.nav}
           style={{ width: "100%" }}
         >
-          <Nav.Item itemKey="Home" link="/Home" text="Home" />
-          <Nav.Item
-            itemKey="Client_detail"
-            link="/Client_detail"
-            text="Client Detail"
-          />
-          <Nav.Item
-            itemKey="Session_details"
-            link="/Session_details"
-            text="Session Details"
-          />
+          <Nav.Item itemKey="Home" link="/Home" text="首页" />
+        <Nav.Item itemKey="Client_detail" link="/Client_detail" text="客户详情" />
+        <Nav.Item itemKey="Session_details" link="/Session_details" text="病人信息" />
         </Nav>
 
         <div
