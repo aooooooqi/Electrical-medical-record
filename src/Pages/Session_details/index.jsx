@@ -9,8 +9,8 @@ const Component = () => {
 
   // 定义状态来存储客户数据和模态框可见性
   const [customers, setCustomers] = useState([
-    { key: "0", title: "Abstergo Ltd.", createDate: "12/06/2020", creator: "Theresa Webb", description: "San Juan" },
-    { key: "1", title: "Umbrella Corp.", createDate: "01/09/2021", creator: "Chris Redfield", description: "Raccoon City" }
+    { key: "0", title: "Abstergo Ltd.", createDate: "12/06/2020", description: "San Juan" },
+    { key: "1", title: "Umbrella Corp.", createDate: "01/09/2021", description: "Raccoon City" }
   ]);
   const [isModalVisible, setModalVisible] = useState(false);
   const [formApi, setFormApi] = useState(null);
@@ -28,13 +28,21 @@ const Component = () => {
     }
   };
 
+  // 获取当前日期并格式化为 "MM/DD/YYYY"
+  const getCurrentDate = () => {
+    const today = new Date();
+    const day = String(today.getDate()).padStart(2, '0');
+    const month = String(today.getMonth() + 1).padStart(2, '0'); // Months are zero-indexed
+    const year = today.getFullYear();
+    return `${month}/${day}/${year}`;
+  };
+
   // 处理表单提交
   const handleSubmit = (values) => {
     const newCustomer = {
       key: (customers.length + 1).toString(),
-      title: values.companyName,
-      createDate: values.createDate,
-      creator: values.creator,
+      title: values.companyName, // 客户名字
+      createDate: getCurrentDate(), // 设置为当前日期
       description: values.description
     };
     setCustomers([...customers, newCustomer]);
@@ -71,27 +79,22 @@ const Component = () => {
         }
         className={styles.nav}
       >
-        <Nav.Item itemKey="Home" link="/" text="首页" />
+        <Nav.Item itemKey="Home" link="/Home" text="首页" />
         <Nav.Item itemKey="Client_detail" link="/client_detail" text="客户详情" />
         <Nav.Item itemKey="Session_details" link="/Session_details" text="病人信息" />
       </Nav>
       <div className={styles.content}>
-        <div className={styles.frame18637}>
-          <div className={styles.frame1321314182}>
-            <div className={styles.workitemIcon}>
-              <IconUserCircle className={styles.semiIconsUserCircle} />
-            </div>
-            <Descriptions
-              data={[{ key: "用户总数量", value: customers.length.toString() }]}
-              row={true}
-              className={styles.descriptions}
-            />
-          </div>
+        <div className={styles.header}>
+          <Descriptions
+            data={[{ key: "用户总数量", value: customers.length.toString() }]}
+            row={true}
+            className={styles.descriptions}
+          />
           <Button
             type="primary"
             icon={<IconPlus />}
             onClick={showModal}
-            style={{ alignSelf: "center" }}
+            className={styles.addButton}
           >
             添加客户
           </Button>
@@ -101,7 +104,7 @@ const Component = () => {
           <Table
             columns={[
               {
-                title: "标题",
+                title: "客户名字",
                 render: (text, record) => {
                   return (
                     <div
@@ -127,26 +130,6 @@ const Component = () => {
                 },
                 sorter: (a, b) => (new Date(a.createDate) - new Date(b.createDate)),
                 dataIndex: "createDate",
-              },
-              {
-                title: "创建人",
-                width: 176,
-                render: (text, record) => {
-                  return (
-                    <div className={styles.tD2}>
-                      <Avatar
-                        size="small"
-                        src="https://sf6-cdn-tos.douyinstatic.com/obj/eden-cn/ptlz_zlp/ljhwZthlaukjlkulzlp/root-web-sites/avatarDemo.jpeg"
-                        color="blue"
-                        className={styles.avatar}
-                      >
-                        示例
-                      </Avatar>
-                      <p className={styles.text3}>{record.creator}</p>
-                    </div>
-                  );
-                },
-                dataIndex: "creator",
               },
               {
                 title: "描述",
@@ -189,9 +172,7 @@ const Component = () => {
           getFormApi={setFormApi}
           onSubmit={handleSubmit}
         >
-          <Form.Input field="companyName" label="公司名称" placeholder="请输入公司名称" required />
-          <Form.Input field="createDate" label="创建日期" placeholder="例如：12/06/2020" required />
-          <Form.Input field="creator" label="创建人" placeholder="请输入创建人姓名" required />
+          <Form.Input field="companyName" label="客户名字" placeholder="请输入客户名字" required />
           <Form.Input field="description" label="描述" placeholder="请输入描述" required />
         </Form>
       </Modal>

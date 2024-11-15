@@ -10,10 +10,9 @@ const ClientDetail = () => {
   const customerDetails = {
     id: id,
     name: "Richard Hendricks",
-    username: "@RichardHendricks",
-    location: "中国 北京",
+    location: "加拿大",
     email: "richard@gmail.com",
-    description: "长期头痛，需进一步检查",
+    description: "长期头痛",
     tags: ["新病人", "重点观察", "VIP"],
     contact: {
       appleAccount: "richard@icloud.com",
@@ -53,9 +52,10 @@ const ClientDetail = () => {
         }
         className={styles.nav}
       >
-        <Nav.Item itemKey="Home" link="/" text="首页" />
+        <Nav.Item itemKey="Home" link="/Home" text="首页" />
         <Nav.Item itemKey="Client_detail" link="/client_detail" text="客户详情" />
         <Nav.Item itemKey="Session_details" link="/Session_details" text="病人信息" />
+        
       </Nav>
       <div className={styles.main}>
         <div className={styles.card}>
