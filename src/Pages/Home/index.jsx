@@ -59,6 +59,7 @@ const MouseDraggableCalendar = ({ mode, calendarDisplayValue }) => {
         ),
         participants: [],
         isNew: true,
+        notes: "",
       };
 
       setViewingEvent(newEvent);
@@ -106,6 +107,7 @@ const MouseDraggableCalendar = ({ mode, calendarDisplayValue }) => {
         participants: values.participants,
         isNew: false,
         key: Date.now().toString(),
+        notes: values.notes,
       };
       updatedEvents = [...events, newEvent];
     } else {
@@ -119,6 +121,7 @@ const MouseDraggableCalendar = ({ mode, calendarDisplayValue }) => {
               end: values.endTime,
               participants: values.participants,
               key: Date.now().toString(),
+              notes: values.notes,
             }
           : event
       );
@@ -234,6 +237,7 @@ const MouseDraggableCalendar = ({ mode, calendarDisplayValue }) => {
               startTime: viewingEvent.start,
               endTime: viewingEvent.end,
               participants: viewingEvent.participants,
+              notes: viewingEvent.notes,
             }}
           >
             <Form.Input
@@ -264,6 +268,7 @@ const MouseDraggableCalendar = ({ mode, calendarDisplayValue }) => {
               <Select.Option value="莫桐">莫桐</Select.Option>
               <Select.Option value="元硕">元硕</Select.Option>
             </Form.Select>
+            <Form.TextArea field="notes" label="备注" style={{ marginBottom: 12 }} />
             <Button
               theme="solid"
               type="primary"
