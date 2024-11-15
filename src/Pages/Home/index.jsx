@@ -21,6 +21,7 @@ import {
   IconHelpCircle,
   IconBell,
 } from "@douyinfe/semi-icons";
+import { useNavigate } from "react-router-dom"; // 引入 useNavigate
 import styles from "../../index.css";
 
 const MouseDraggableCalendar = ({ mode, calendarDisplayValue }) => {
@@ -30,11 +31,12 @@ const MouseDraggableCalendar = ({ mode, calendarDisplayValue }) => {
   const [popoverPosition, setPopoverPosition] = useState("right");
   const [isModalVisible, setIsModalVisible] = useState(false);
   const calendarRef = useRef(null);
+  const navigate = useNavigate(); // 使用 useNavigate
 
   const handleCalendarClick = (e, date) => {
     if (date) {
       const startHour = date.getHours();
-      const startMinute = date.getMinutes().toString().padStart(2, '0');
+      const startMinute = date.getMinutes().toString().padStart(2, "0");
       const endHour = (startHour + 1) % 24;
       const endMinute = startMinute;
 
@@ -74,22 +76,23 @@ const MouseDraggableCalendar = ({ mode, calendarDisplayValue }) => {
     if (eventElement) {
       const rect = eventElement.getBoundingClientRect();
       const windowWidth = window.innerWidth;
-  
+
       // 默认设置位置为右侧
       let position = "right";
-  
+
       // 如果右侧空间不足，将位置设为左侧
       if (rect.right + 300 > windowWidth) {
         position = "left";
-      } 
+      }
       // 如果左侧空间不足且已经设置为左侧，将位置切换回右侧
       else if (rect.left < 300 && position === "left") {
         position = "right";
       }
-  
+
       setPopoverPosition(position);
     }
   };
+
   const handleFormSubmit = (values) => {
     let updatedEvents = [];
 
@@ -127,57 +130,89 @@ const MouseDraggableCalendar = ({ mode, calendarDisplayValue }) => {
   return (
     <div
       ref={calendarRef}
-      style={{ position: "relative", height: "700px", width: "100%", cursor: "pointer" }}
+      style={{
+        position: "relative",
+        height: "700px",
+        width: "100%",
+        cursor: "pointer",
+      }}
     >
       <Calendar
         height={700}
         mode={mode}
         displayValue={calendarDisplayValue}
-        events={events.map(event => ({
+        events={events.map((event) => ({
           ...event,
-          children: (
-            event.isNew ? null : (
-              <Popover
-                content={
-                  <div>
-                    <p>事件标题: {event.title}</p>
-                    <p>
-                      时间: {event.start.getHours()}:{event.start.getMinutes().toString().padStart(2, '0')} - {event.end.getHours()}:{event.end.getMinutes().toString().padStart(2, '0')}
-                    </p>
-                    <p>参与者: {event.participants.join(', ')}</p>
-                    <Button onClick={() => {
+          children: event.isNew ? null : (
+            <Popover
+              content={
+                <div>
+                  <p>事件标题: {event.title}</p>
+                  <p>
+                    时间: {event.start.getHours()}:
+                    {event.start.getMinutes().toString().padStart(2, "0")} -{" "}
+                    {event.end.getHours()}:
+                    {event.end.getMinutes().toString().padStart(2, "0")}
+                  </p>
+                  <p>参与者: {event.participants.join(", ")}</p>
+                  <Button
+                    onClick={() => {
                       setViewingEvent(event);
                       setIsModalVisible(true); // 打开 Modal 以编辑事件
                       setPopoverVisible(false); // 关闭 Popover
-                    }}>
-                      修改
-                    </Button>
-                  </div>
-                }
-                trigger="click"
-                visible={viewingEvent && viewingEvent.key === event.key && popoverVisible}
-                onVisibleChange={(visible) => setPopoverVisible(visible)}
-                getPopupContainer={() => document.body}
-                position={popoverPosition}
-                showArrow
+                    }}
+                    style={{ marginRight: 8 }}
+                  >
+                    修改
+                  </Button>
+                  <Button
+                    onClick={() => {
+                      navigate("/Client_detail"); // 跳转到 /Client_detail 页面
+                      setPopoverVisible(false);
+                    }}
+                  >
+                    查看病人的信息
+                  </Button>
+                </div>
+              }
+              trigger="click"
+              visible={
+                viewingEvent &&
+                viewingEvent.key === event.key &&
+                popoverVisible
+              }
+              onVisibleChange={(visible) => setPopoverVisible(visible)}
+              getPopupContainer={() => document.body}
+              position={popoverPosition}
+              showArrow
+            >
+              <Card
+                shadows="hover"
+                style={{
+                  height: "100%",
+                  width: "100%",
+                  border: "1px solid #1890ff",
+                }}
+                bodyStyle={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+                onClick={(e) => handleCardClick(event, e)}
+                data-event-key={event.key}
               >
-                <Card
-                  shadows="hover"
-                  style={{ height: '100%', width: '100%', border: '1px solid #1890ff' }}
-                  bodyStyle={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-                  onClick={(e) => handleCardClick(event, e)}
-                  data-event-key={event.key}
-                >
-                  {event.title} ({event.start.getHours()}:{event.start.getMinutes().toString().padStart(2, '0')} - {event.end.getHours()}:{event.end.getMinutes().toString().padStart(2, '0')})
-                </Card>
-              </Popover>
-            )
-          )
+                {event.title} ({event.start.getHours()}:
+                {event.start.getMinutes().toString().padStart(2, "0")} -{" "}
+                {event.end.getHours()}:
+                {event.end.getMinutes().toString().padStart(2, "0")})
+              </Card>
+            </Popover>
+          ),
         }))}
         onClick={handleCalendarClick}
       />
 
-      {/* Modal 部分 */}
+      {/* 编辑事件的 Modal */}
       {viewingEvent && (
         <Modal
           title={viewingEvent.isNew ? "创建新事件" : "编辑事件"}
@@ -227,15 +262,24 @@ const MouseDraggableCalendar = ({ mode, calendarDisplayValue }) => {
               <Select.Option value="莫桐">莫桐</Select.Option>
               <Select.Option value="元硕">元硕</Select.Option>
             </Form.Select>
-            <Button theme="solid" type="primary" htmlType="submit" style={{ marginRight: 12 }}>
+            <Button
+              theme="solid"
+              type="primary"
+              htmlType="submit"
+              style={{ marginRight: 12 }}
+            >
               保存
             </Button>
-            <Button theme="border" type="secondary" onClick={() => {
-              if (viewingEvent.isNew) {
-                setViewingEvent(null);
-              }
-              setIsModalVisible(false);
-            }}>
+            <Button
+              theme="border"
+              type="secondary"
+              onClick={() => {
+                if (viewingEvent.isNew) {
+                  setViewingEvent(null);
+                }
+                setIsModalVisible(false);
+              }}
+            >
               取消
             </Button>
           </Form>
@@ -283,7 +327,11 @@ class CustomComponent extends Component {
           footer={
             <div
               className={styles.dIv}
-              style={{ display: "flex", alignItems: "center", gap: "1vw" }}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "1vw",
+              }}
             >
               <IconFeishuLogo
                 size="large"
@@ -311,8 +359,16 @@ class CustomComponent extends Component {
           style={{ width: "100%" }}
         >
           <Nav.Item itemKey="Home" link="/Home" text="首页" />
-        <Nav.Item itemKey="Client_detail" link="/Client_detail" text="客户详情" />
-        <Nav.Item itemKey="Session_details" link="/Session_details" text="病人信息" />
+          <Nav.Item
+            itemKey="Client_detail"
+            link="/Client_detail"
+            text="客户详情"
+          />
+          <Nav.Item
+            itemKey="Session_details"
+            link="/Session_details"
+            text="病人信息"
+          />
         </Nav>
 
         <div
@@ -320,7 +376,11 @@ class CustomComponent extends Component {
           style={{ marginTop: "2%", flexGrow: 1, width: "100%" }}
         >
           <Space vertical align="start" style={{ width: "100%" }}>
-            <RadioGroup onChange={this.onSelect} value={mode} type="button">
+            <RadioGroup
+              onChange={this.onSelect}
+              value={mode}
+              type="button"
+            >
               <Radio value={"week"}>周视图</Radio>
               <Radio value={"month"}>月视图</Radio>
             </RadioGroup>
