@@ -72,8 +72,7 @@ const ClientDetail = () => {
         className={styles.nav}
       >
         <Nav.Item itemKey="Home" link="/Home" text="首页" />
-        <Nav.Item itemKey="Client_detail" link="/client_detail" text="客户详情" />
-        <Nav.Item itemKey="Session_details" link="/Session_details" text="病人信息" />
+        <Nav.Item itemKey="Session_details" link="/Clients" text="病人信息" />
       </Nav>
       <div className={styles.main}>
         <div className={styles.card}>

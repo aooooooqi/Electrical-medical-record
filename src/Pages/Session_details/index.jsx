@@ -51,7 +51,8 @@ const Component = () => {
 
   // 处理跳转到客户详情页
   const goToClientDetail = (customerKey) => {
-    navigate(`/client_detail/${customerKey}`);
+    // navigate(`/client_detail/${customerKey}`);
+    navigate('/client_detail');
   };
 
   return (
@@ -80,8 +81,7 @@ const Component = () => {
         className={styles.nav}
       >
         <Nav.Item itemKey="Home" link="/Home" text="首页" />
-        <Nav.Item itemKey="Client_detail" link="/client_detail" text="客户详情" />
-        <Nav.Item itemKey="Session_details" link="/Session_details" text="病人信息" />
+        <Nav.Item itemKey="Session_details" link="/Clients" text="病人信息" />
       </Nav>
       <div className={styles.content}>
         <div className={styles.header}>
@@ -181,22 +181,23 @@ const Component = () => {
 };
 
 // 客户详细页面组件
-const ClientDetail = () => {
-  const { id } = useParams(); // 使用 useParams 获取客户 ID
-  return (
-    <div>
-      <h2>客户详情 - ID: {id}</h2>
-      {/* 在这里可以添加更多客户详细信息 */}
-    </div>
-  );
-};
+// const ClientDetail = () => {
+//   const { id } = useParams(); // 使用 useParams 获取客户 ID
+//   return (
+//     <div>
+//       <h2>客户详情 - ID: {id}</h2>
+//       {/* 在这里可以添加更多客户详细信息 */}
+//     </div>
+//   );
+// };
 
 const App = () => {
   return (
-    <Routes>
-      <Route path="/" element={<Component />} />
-      <Route path="/client_detail/:id" element={<ClientDetail />} />
-    </Routes>
+    // <Routes>
+    //   <Route path="/" element={<Component />} />
+    //   <Route path="/client_detail/:id" element={<ClientDetail />} />
+    // </Routes>
+    <Component />
   );
 };
 

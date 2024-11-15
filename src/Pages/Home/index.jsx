@@ -105,6 +105,7 @@ const MouseDraggableCalendar = ({ mode, calendarDisplayValue }) => {
         end: values.endTime,
         participants: values.participants,
         isNew: false,
+        key: Date.now().toString(),
       };
       updatedEvents = [...events, newEvent];
     } else {
@@ -117,6 +118,7 @@ const MouseDraggableCalendar = ({ mode, calendarDisplayValue }) => {
               start: values.startTime,
               end: values.endTime,
               participants: values.participants,
+              key: Date.now().toString(),
             }
           : event
       );
@@ -360,13 +362,8 @@ class CustomComponent extends Component {
         >
           <Nav.Item itemKey="Home" link="/Home" text="首页" />
           <Nav.Item
-            itemKey="Client_detail"
-            link="/Client_detail"
-            text="客户详情"
-          />
-          <Nav.Item
             itemKey="Session_details"
-            link="/Session_details"
+            link="/Clients"
             text="病人信息"
           />
         </Nav>
