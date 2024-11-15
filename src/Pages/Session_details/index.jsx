@@ -7,7 +7,7 @@ import styles from './index.module.scss';
 const Component = () => {
   const navigate = useNavigate();
 
-  // 定义状态来存储客户数据和模态框可见性
+  // Define state to store customer data and modal visibility
   const [customers, setCustomers] = useState([
     { key: "0", title: "Abstergo Ltd.", createDate: "12/06/2020", description: "San Juan" },
     { key: "1", title: "Umbrella Corp.", createDate: "01/09/2021", description: "Raccoon City" }
@@ -15,12 +15,12 @@ const Component = () => {
   const [isModalVisible, setModalVisible] = useState(false);
   const [formApi, setFormApi] = useState(null);
 
-  // 显示模态框
+  // Show modal
   const showModal = () => {
     setModalVisible(true);
   };
 
-  // 关闭模态框
+  // Close modal
   const closeModal = () => {
     setModalVisible(false);
     if (formApi) {
@@ -28,30 +28,29 @@ const Component = () => {
     }
   };
 
-  // 获取当前日期并格式化为 "MM/DD/YYYY"
+  // Get current date in "MM/DD/YYYY" format
   const getCurrentDate = () => {
     const today = new Date();
     const day = String(today.getDate()).padStart(2, '0');
-    const month = String(today.getMonth() + 1).padStart(2, '0'); // Months are zero-indexed
+    const month = String(today.getMonth() + 1).padStart(2, '0');
     const year = today.getFullYear();
     return `${month}/${day}/${year}`;
   };
 
-  // 处理表单提交
+  // Handle form submission
   const handleSubmit = (values) => {
     const newCustomer = {
       key: (customers.length + 1).toString(),
-      title: values.companyName, // 客户名字
-      createDate: getCurrentDate(), // 设置为当前日期
+      title: values.companyName, // Customer name
+      createDate: getCurrentDate(), // Set to current date
       description: values.description
     };
     setCustomers([...customers, newCustomer]);
     closeModal();
   };
 
-  // 处理跳转到客户详情页
+  // Navigate to customer detail page
   const goToClientDetail = (customerKey) => {
-    // navigate(`/client_detail/${customerKey}`);
     navigate('/client_detail');
   };
 
@@ -74,19 +73,19 @@ const Component = () => {
               color="blue"
               className={styles.avatar}
             >
-              示例
+              Demo
             </Avatar>
           </div>
         }
         className={styles.nav}
       >
-        <Nav.Item itemKey="Home" link="/Home" text="首页" />
-        <Nav.Item itemKey="Session_details" link="/Clients" text="病人信息" />
+        <Nav.Item itemKey="Home" link="#/Home" text="Home" />
+        <Nav.Item itemKey="Session_details" link="#/Clients" text="Client Information" />
       </Nav>
       <div className={styles.content}>
         <div className={styles.header}>
           <Descriptions
-            data={[{ key: "用户总数量", value: customers.length.toString() }]}
+            data={[{ key: "Total Users", value: customers.length.toString() }]}
             row={true}
             className={styles.descriptions}
           />
@@ -96,7 +95,7 @@ const Component = () => {
             onClick={showModal}
             className={styles.addButton}
           >
-            添加客户
+            Add Customer
           </Button>
         </div>
         <div className={styles.customers}>
@@ -104,7 +103,7 @@ const Component = () => {
           <Table
             columns={[
               {
-                title: "客户名字",
+                title: "Customer Name",
                 render: (text, record) => {
                   return (
                     <div
@@ -123,7 +122,7 @@ const Component = () => {
                 dataIndex: "title",
               },
               {
-                title: "创建日期",
+                title: "Creation Date",
                 width: 180,
                 render: (text, record) => {
                   return <p className={styles.text2}>{record.createDate}</p>;
@@ -132,7 +131,7 @@ const Component = () => {
                 dataIndex: "createDate",
               },
               {
-                title: "描述",
+                title: "Description",
                 width: 161,
                 render: (text, record) => {
                   return <p className={styles.text4}>{record.description}</p>;
@@ -140,7 +139,7 @@ const Component = () => {
                 dataIndex: "description",
               },
               {
-                title: "操作",
+                title: "Actions",
                 width: 149,
                 render: (text, record) => {
                   return (
@@ -161,9 +160,9 @@ const Component = () => {
         </div>
       </div>
 
-      {/* 添加客户的模态框 */}
+      {/* Add Customer Modal */}
       <Modal
-        title="添加客户"
+        title="Add Customer"
         visible={isModalVisible}
         onCancel={closeModal}
         onOk={() => formApi.submitForm()}
@@ -172,31 +171,16 @@ const Component = () => {
           getFormApi={setFormApi}
           onSubmit={handleSubmit}
         >
-          <Form.Input field="companyName" label="客户名字" placeholder="请输入客户名字" required />
-          <Form.Input field="description" label="描述" placeholder="请输入描述" required />
+          <Form.Input field="companyName" label="Customer Name" placeholder="Enter customer name" required />
+          <Form.Input field="description" label="Description" placeholder="Enter description" required />
         </Form>
       </Modal>
     </div>
   );
 };
 
-// 客户详细页面组件
-// const ClientDetail = () => {
-//   const { id } = useParams(); // 使用 useParams 获取客户 ID
-//   return (
-//     <div>
-//       <h2>客户详情 - ID: {id}</h2>
-//       {/* 在这里可以添加更多客户详细信息 */}
-//     </div>
-//   );
-// };
-
 const App = () => {
   return (
-    // <Routes>
-    //   <Route path="/" element={<Component />} />
-    //   <Route path="/client_detail/:id" element={<ClientDetail />} />
-    // </Routes>
     <Component />
   );
 };

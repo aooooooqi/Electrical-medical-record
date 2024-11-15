@@ -5,11 +5,11 @@ import { useNavigate } from "react-router-dom";
 import styles from "./index.module.scss";
 
 const Component = () => {
-  const navigate = useNavigate(); // 使用 useNavigate 钩子来进行页面跳转
+  const navigate = useNavigate(); // Use useNavigate hook for navigation
 
   const handleLogin = () => {
-    // 处理登录逻辑，例如验证用户名和密码
-    // 假设验证成功后，跳转到 Home 页面
+    // Handle login logic, such as validating username and password
+    // Assuming validation is successful, navigate to the Home page
     navigate("/Home");
   };
 
@@ -32,14 +32,14 @@ const Component = () => {
               color="blue"
               className={styles.avatar}
             >
-              示例
+              Demo
             </Avatar>
           </div>
         }
         className={styles.nav}
       >
-        <Nav.Item itemKey="Home" link="/Home" text="首页" />
-        <Nav.Item itemKey="Session_details" link="/Clients" text="病人信息" />
+        <Nav.Item itemKey="Home" link="#/Home" text="Home" />
+        <Nav.Item itemKey="Session_details" link="#/Clients" text="Patient Information" />
       </Nav>
       <div className={styles.main}>
         <div className={styles.login}>
@@ -49,39 +49,39 @@ const Component = () => {
               className={styles.logo}
             />
             <div className={styles.header}>
-              <p className={styles.title}>欢迎回来</p>
+              <p className={styles.title}>Welcome Back</p>
               <p className={styles.text}>
-                <span className={styles.text2}>登录</span>
+                <span className={styles.text2}>Log in</span>
                 <span className={styles.text3}> Semi Design </span>
-                <span className={styles.text2}>账户</span>
+                <span className={styles.text2}>Account</span>
               </p>
             </div>
           </div>
           <div className={styles.form}>
             <Form className={styles.inputs}>
               <Form.Input
-                label={{ text: "用户名" }}
+                label={{ text: "Username" }}
                 field="input"
-                placeholder="输入用户名"
+                placeholder="Enter username"
                 fieldStyle={{ padding: 0 }}
                 style={{ width: 440 }}
                 className={styles.formField}
               />
               <Form.Input
-                label={{ text: "密码" }}
+                label={{ text: "Password" }}
                 field="field1"
-                placeholder="输入密码"
-                type="password" // 添加 type 为 password，确保输入的密码不会明文显示
+                placeholder="Enter password"
+                type="password" // Add type as password to ensure password input is not shown in plain text
                 fieldStyle={{ padding: 0 }}
                 style={{ width: 440 }}
                 className={styles.formField}
               />
             </Form>
             <Checkbox type="default" className={styles.checkbox}>
-              记住我
+              Remember me
             </Checkbox>
             <Button theme="solid" className={styles.button} onClick={handleLogin}>
-              登录
+              Log In
             </Button>
           </div>
         </div>

@@ -21,7 +21,7 @@ import {
   IconHelpCircle,
   IconBell,
 } from "@douyinfe/semi-icons";
-import { useNavigate } from "react-router-dom"; // 引入 useNavigate
+import { useNavigate } from "react-router-dom";
 import styles from "../../index.css";
 
 const MouseDraggableCalendar = ({ mode, calendarDisplayValue }) => {
@@ -31,7 +31,7 @@ const MouseDraggableCalendar = ({ mode, calendarDisplayValue }) => {
   const [popoverPosition, setPopoverPosition] = useState("right");
   const [isModalVisible, setIsModalVisible] = useState(false);
   const calendarRef = useRef(null);
-  const navigate = useNavigate(); // 使用 useNavigate
+  const navigate = useNavigate();
 
   const handleCalendarClick = (e, date) => {
     if (date) {
@@ -63,7 +63,7 @@ const MouseDraggableCalendar = ({ mode, calendarDisplayValue }) => {
       };
 
       setViewingEvent(newEvent);
-      setIsModalVisible(true); // 打开 Modal
+      setIsModalVisible(true);
     }
   };
 
@@ -78,15 +78,11 @@ const MouseDraggableCalendar = ({ mode, calendarDisplayValue }) => {
       const rect = eventElement.getBoundingClientRect();
       const windowWidth = window.innerWidth;
 
-      // 默认设置位置为右侧
       let position = "right";
 
-      // 如果右侧空间不足，将位置设为左侧
       if (rect.right + 300 > windowWidth) {
         position = "left";
-      }
-      // 如果左侧空间不足且已经设置为左侧，将位置切换回右侧
-      else if (rect.left < 300 && position === "left") {
+      } else if (rect.left < 300 && position === "left") {
         position = "right";
       }
 
@@ -98,7 +94,6 @@ const MouseDraggableCalendar = ({ mode, calendarDisplayValue }) => {
     let updatedEvents = [];
 
     if (viewingEvent.isNew) {
-      // 新建事件，添加到事件列表
       const newEvent = {
         ...viewingEvent,
         title: values.name || "untitled",
@@ -111,7 +106,6 @@ const MouseDraggableCalendar = ({ mode, calendarDisplayValue }) => {
       };
       updatedEvents = [...events, newEvent];
     } else {
-      // 编辑已存在的事件
       updatedEvents = events.map((event) =>
         event.key === viewingEvent.key
           ? {
@@ -152,31 +146,31 @@ const MouseDraggableCalendar = ({ mode, calendarDisplayValue }) => {
             <Popover
               content={
                 <div>
-                  <p>事件标题: {event.title}</p>
+                  <p>Event Title: {event.title}</p>
                   <p>
-                    时间: {event.start.getHours()}:
-                    {event.start.getMinutes().toString().padStart(2, "0")} -{" "}
+                    Time: {event.start.getHours()}:
+                    {event.start.getMinutes().toString().padStart(2, "0")} - {" "}
                     {event.end.getHours()}:
                     {event.end.getMinutes().toString().padStart(2, "0")}
                   </p>
-                  <p>参与者: {event.participants.join(", ")}</p>
+                  <p>Participants: {event.participants.join(", ")}</p>
                   <Button
                     onClick={() => {
                       setViewingEvent(event);
-                      setIsModalVisible(true); // 打开 Modal 以编辑事件
-                      setPopoverVisible(false); // 关闭 Popover
+                      setIsModalVisible(true);
+                      setPopoverVisible(false);
                     }}
                     style={{ marginRight: 8 }}
                   >
-                    修改
+                    Edit
                   </Button>
                   <Button
                     onClick={() => {
-                      navigate("/Client_detail"); // 跳转到 /Client_detail 页面
+                      navigate("/Client_detail");
                       setPopoverVisible(false);
                     }}
                   >
-                    查看病人的信息
+                    View Client Information
                   </Button>
                 </div>
               }
@@ -207,7 +201,7 @@ const MouseDraggableCalendar = ({ mode, calendarDisplayValue }) => {
                 data-event-key={event.key}
               >
                 {event.title} ({event.start.getHours()}:
-                {event.start.getMinutes().toString().padStart(2, "0")} -{" "}
+                {event.start.getMinutes().toString().padStart(2, "0")} - {" "}
                 {event.end.getHours()}:
                 {event.end.getMinutes().toString().padStart(2, "0")})
               </Card>
@@ -217,10 +211,9 @@ const MouseDraggableCalendar = ({ mode, calendarDisplayValue }) => {
         onClick={handleCalendarClick}
       />
 
-      {/* 编辑事件的 Modal */}
       {viewingEvent && (
         <Modal
-          title={viewingEvent.isNew ? "创建新事件" : "编辑事件"}
+          title={viewingEvent.isNew ? "Create New Event" : "Edit Event"}
           visible={isModalVisible}
           onCancel={() => {
             if (viewingEvent.isNew) {
@@ -242,40 +235,40 @@ const MouseDraggableCalendar = ({ mode, calendarDisplayValue }) => {
           >
             <Form.Input
               field="name"
-              label="事件标题"
+              label="Event Title"
               style={{ marginBottom: 12 }}
-              placeholder="请输入事件标题"
+              placeholder="Enter event title"
             />
             <Form.DatePicker
               field="startTime"
               type="dateTime"
-              label="开始时间"
+              label="Start Time"
               style={{ marginBottom: 12 }}
             />
             <Form.DatePicker
               field="endTime"
               type="dateTime"
-              label="结束时间"
+              label="End Time"
               style={{ marginBottom: 12 }}
             />
             <Form.Select
               field="participants"
-              label="添加参与者"
+              label="Add Participants"
               style={{ width: "100%", marginBottom: 12 }}
               multiple
             >
-              <Select.Option value="昊民">昊民</Select.Option>
-              <Select.Option value="莫桐">莫桐</Select.Option>
-              <Select.Option value="元硕">元硕</Select.Option>
+              <Select.Option value="Participant A">Participant A</Select.Option>
+              <Select.Option value="Participant B">Participant B</Select.Option>
+              <Select.Option value="Participant C">Participant C</Select.Option>
             </Form.Select>
-            <Form.TextArea field="notes" label="备注" style={{ marginBottom: 12 }} />
+            <Form.TextArea field="notes" label="Notes" style={{ marginBottom: 12 }} />
             <Button
               theme="solid"
               type="primary"
               htmlType="submit"
               style={{ marginRight: 12 }}
             >
-              保存
+              Save
             </Button>
             <Button
               theme="border"
@@ -287,7 +280,7 @@ const MouseDraggableCalendar = ({ mode, calendarDisplayValue }) => {
                 setIsModalVisible(false);
               }}
             >
-              取消
+              Cancel
             </Button>
           </Form>
         </Modal>
@@ -340,37 +333,24 @@ class CustomComponent extends Component {
                 gap: "1vw",
               }}
             >
-              <IconFeishuLogo
-                size="large"
-                className={styles.semiIconsFeishuLogo}
-              />
-              <IconHelpCircle
-                size="large"
-                className={styles.semiIconsFeishuLogo}
-              />
-              <IconBell
-                size="large"
-                className={styles.semiIconsFeishuLogo}
-              />
+              <IconFeishuLogo size="large" className={styles.semiIconsFeishuLogo} />
+              <IconHelpCircle size="large" className={styles.semiIconsFeishuLogo} />
+              <IconBell size="large" className={styles.semiIconsFeishuLogo} />
               <Avatar
                 size="small"
                 src="https://sf6-cdn-tos.douyinstatic.com/obj/eden-cn/ptlz_zlp/ljhwZthlaukjlkulzlp/root-web-sites/avatarDemo.jpeg"
                 color="blue"
                 className={styles.avatar}
               >
-                示例
+                Demo
               </Avatar>
             </div>
           }
           className={styles.nav}
           style={{ width: "100%" }}
         >
-          <Nav.Item itemKey="Home" link="/Home" text="首页" />
-          <Nav.Item
-            itemKey="Session_details"
-            link="/Clients"
-            text="病人信息"
-          />
+          <Nav.Item itemKey="Home" link="#/Home" text="Home" />
+          <Nav.Item itemKey="Session_details" link="#/Clients" text="Client Information" />
         </Nav>
 
         <div
@@ -383,8 +363,8 @@ class CustomComponent extends Component {
               value={mode}
               type="button"
             >
-              <Radio value={"week"}>周视图</Radio>
-              <Radio value={"month"}>月视图</Radio>
+              <Radio value={"week"}>Week View</Radio>
+              <Radio value={"month"}>Month View</Radio>
             </RadioGroup>
             <DatePicker
               value={displayValue}

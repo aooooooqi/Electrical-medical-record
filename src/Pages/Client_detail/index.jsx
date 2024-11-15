@@ -5,16 +5,16 @@ import { IconSemiLogo, IconFeishuLogo, IconHelpCircle, IconBell, IconMapPin, Ico
 import styles from './index.module.scss';
 
 const ClientDetail = () => {
-  const { id } = useParams(); // 获取客户的 ID
+  const { id } = useParams(); // Get the client ID
 
-  // 模拟客户详细数据，可以从服务器获取数据
+  // Simulate client detail data, which could be fetched from the server
   const [customerDetails, setCustomerDetails] = useState({
     id: id,
     name: "Richard Hendricks",
-    location: "加拿大",
+    location: "Canada",
     email: "richard@gmail.com",
-    description: "长期头痛",
-    tags: ["新病人", "重点观察", "VIP"],
+    description: "Chronic headache",
+    tags: ["New Patient", "Priority Observation", "VIP"],
     contact: {
       appleAccount: "richard@icloud.com",
       googleAccount: "richard@gmail.com",
@@ -22,13 +22,13 @@ const ClientDetail = () => {
       facebook: "Richard Hendricks"
     },
     medicalHistory: [
-      { key: "0", date: "2024-11-01", treatment: "偏头痛，开具药物治疗", doctor: "Dr. Smith" },
-      { key: "1", date: "2024-11-08", treatment: "随访，病情好转", doctor: "Dr. Smith" },
-      { key: "2", date: "2024-11-15", treatment: "康复检查，一切正常", doctor: "Dr. Johnson" },
+      { key: "0", date: "2024-11-01", treatment: "Migraine treatment with prescribed medication", doctor: "Dr. Smith" },
+      { key: "1", date: "2024-11-08", treatment: "Follow-up, condition improving", doctor: "Dr. Smith" },
+      { key: "2", date: "2024-11-15", treatment: "Recovery check-up, all normal", doctor: "Dr. Johnson" },
     ]
   });
 
-  // 处理添加标签
+  // Handle adding a tag
   const handleAddTag = (value) => {
     if (value && !customerDetails.tags.includes(value)) {
       setCustomerDetails(prevState => ({
@@ -38,7 +38,7 @@ const ClientDetail = () => {
     }
   };
 
-  // 处理删除标签
+  // Handle removing a tag
   const handleRemoveTag = (removedTag) => {
     setCustomerDetails(prevState => ({
       ...prevState,
@@ -65,14 +65,14 @@ const ClientDetail = () => {
               color="blue"
               className={styles.avatar}
             >
-              示例
+              Demo
             </Avatar>
           </div>
         }
         className={styles.nav}
       >
-        <Nav.Item itemKey="Home" link="/Home" text="首页" />
-        <Nav.Item itemKey="Session_details" link="/Clients" text="病人信息" />
+        <Nav.Item itemKey="Home" link="#/Home" text="Home" />
+        <Nav.Item itemKey="Session_details" link="#/Clients" text="Client Information" />
       </Nav>
       <div className={styles.main}>
         <div className={styles.card}>
@@ -84,7 +84,7 @@ const ClientDetail = () => {
                 color="blue"
                 className={styles.avatar2}
               >
-                示例
+                Demo
               </Avatar>
             </div>
             <div className={styles.name}>
@@ -103,7 +103,7 @@ const ClientDetail = () => {
               </div>
               <div className={styles.frame4155}>
                 <IconUserCircle className={styles.semiIconsMapPin} />
-                <p className={styles.value4}>病情描述：{customerDetails.description}</p>
+                <p className={styles.value4}>Description: {customerDetails.description}</p>
               </div>
             </div>
             <div className={styles.tags}>
@@ -124,12 +124,12 @@ const ClientDetail = () => {
         </div>
         <div className={styles.panel}>
           <div className={styles.frame2}>
-            <p className={styles.text}>病人联系信息</p>
+            <p className={styles.text}>Client Contact Information</p>
             <div className={styles.frame4160}>
               <Descriptions
                 data={[
-                  { key: "Apple 账号", value: customerDetails.contact.appleAccount },
-                  { key: "Google 账号", value: customerDetails.contact.googleAccount },
+                  { key: "Apple Account", value: customerDetails.contact.appleAccount },
+                  { key: "Google Account", value: customerDetails.contact.googleAccount },
                 ]}
                 align="justify"
                 className={styles.descriptions2}
@@ -147,19 +147,19 @@ const ClientDetail = () => {
           <div className={styles.components}>
             <div className={styles.inputs}>
               <Select
-                placeholder="选择状态"
+                placeholder="Select Status"
                 maxTagCount={3}
                 className={styles.selectTrigger}
                 onChange={handleAddTag}
               >
-                <Select.Option value="新病人">新病人</Select.Option>
-                <Select.Option value="随访">随访</Select.Option>
-                <Select.Option value="治疗中">治疗中</Select.Option>
-                <Select.Option value="康复中">康复中</Select.Option>
+                <Select.Option value="New Patient">New Patient</Select.Option>
+                <Select.Option value="Follow-up">Follow-up</Select.Option>
+                <Select.Option value="Under Treatment">Under Treatment</Select.Option>
+                <Select.Option value="Recovering">Recovering</Select.Option>
               </Select>
               <TextArea
                 maxCount={100}
-                placeholder="备注"
+                placeholder="Remarks"
                 validateStatus="default"
                 className={styles.textArea}
               />
@@ -168,7 +168,7 @@ const ClientDetail = () => {
                 icon={<IconFeishuLogo />}
                 className={styles.button}
               >
-                更新信息
+                Update Information
               </Button>
             </div>
             <Table
@@ -177,7 +177,7 @@ const ClientDetail = () => {
                   render: (text, record) => {
                     return <p className={styles.text4}>{record.date}</p>;
                   },
-                  title: "日期",
+                  title: "Date",
                   width: 150,
                   dataIndex: "date",
                 },
@@ -187,7 +187,7 @@ const ClientDetail = () => {
                       <p className={styles.text2}>{record.treatment}</p>
                     );
                   },
-                  title: "诊断与治疗",
+                  title: "Diagnosis and Treatment",
                   width: 400,
                   dataIndex: "treatment",
                 },
@@ -195,7 +195,7 @@ const ClientDetail = () => {
                   render: (text, record) => {
                     return <p className={styles.text3}>{record.doctor}</p>;
                   },
-                  title: "医生",
+                  title: "Doctor",
                   width: 150,
                   dataIndex: "doctor",
                 },
