@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/Electrical-medical-record/static/css/main.8d045dbe.css",
-    "main.js": "/Electrical-medical-record/static/js/main.bbba2ea8.js",
+    "main.js": "/Electrical-medical-record/static/js/main.1cb848e5.js",
     "index.html": "/Electrical-medical-record/index.html",
     "main.8d045dbe.css.map": "/Electrical-medical-record/static/css/main.8d045dbe.css.map",
-    "main.bbba2ea8.js.map": "/Electrical-medical-record/static/js/main.bbba2ea8.js.map"
+    "main.1cb848e5.js.map": "/Electrical-medical-record/static/js/main.1cb848e5.js.map"
   },
   "entrypoints": [
     "static/css/main.8d045dbe.css",
-    "static/js/main.bbba2ea8.js"
+    "static/js/main.1cb848e5.js"
   ]
 }
